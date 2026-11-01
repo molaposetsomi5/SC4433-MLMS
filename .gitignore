@@ -1,0 +1,21 @@
+# Visual Studio
+.vs/
+
+# CMake generated files
+out/
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiled files
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.lib
+*.dll
+
+# User-specific settings
+CMakeUserPresets.json
