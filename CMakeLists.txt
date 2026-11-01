@@ -41,25 +41,46 @@ configure_file(
 add_executable(MLMS
     src/main.cpp
 
-    # Domain classes
     src/domain/User.cpp
     src/domain/RoleUsers.cpp
 
-    # Security classes
     src/security/PasswordHasher.cpp
 
-    # Repository classes
     src/repositories/UserRepository.cpp
     src/repositories/sqlite/SQLiteUserRepository.cpp
+
+    src/services/AuthenticationService.cpp
 )
 
 target_include_directories(MLMS PRIVATE
     include
 )
 
-# Link required libraries
 target_link_libraries(MLMS PRIVATE
     sqlite3
+    argon2
+    bcrypt
+)
+
+# Authentication test application
+add_executable(MLMS_Authentication_Tests
+    tests/AuthenticationTest.cpp
+
+    src/domain/User.cpp
+    src/domain/RoleUsers.cpp
+
+    src/security/PasswordHasher.cpp
+
+    src/repositories/UserRepository.cpp
+
+    src/services/AuthenticationService.cpp
+)
+
+target_include_directories(MLMS_Authentication_Tests PRIVATE
+    include
+)
+
+target_link_libraries(MLMS_Authentication_Tests PRIVATE
     argon2
     bcrypt
 )
