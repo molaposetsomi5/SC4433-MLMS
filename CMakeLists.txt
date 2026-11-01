@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.20)
 
 project(CS4433_MLMS)
@@ -14,6 +13,13 @@ add_library(sqlite3 STATIC
 # Make SQLite header available to the application
 target_include_directories(sqlite3 PUBLIC
     third_party/sqlite
+)
+
+# Copy the database schema into the build directory
+configure_file(
+    sql/schema.sql
+    schema.sql
+    COPYONLY
 )
 
 # Main MLMS application
