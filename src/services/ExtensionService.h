@@ -21,6 +21,11 @@ public:
     std::string grantIndividual(const User& lecturer, int assignmentId, int studentId,
                                 const std::string& revisedDeadline, const std::string& reason);
 
+    // v1.1 (CR1): extends the deadline for every student in the course.
+    // Refused once any submission for the assignment has been marked.
+    std::string grantClass(const User& lecturer, int assignmentId, const std::string& revisedDeadline,
+                           const std::string& reason);
+
 private:
     Assignment loadTaughtAssignment(const User& lecturer, int assignmentId);
 

@@ -79,6 +79,8 @@ public:
     std::optional<Extension> findById(int extensionId) override;
     std::optional<Extension> find(int assignmentId, int studentId) override;
     void save(const Extension& extension) override;
+    std::optional<ClassExtension> findClassExtension(int assignmentId) override;
+    void saveClassExtension(const ClassExtension& extension) override;
 
 private:
     Database& db_;

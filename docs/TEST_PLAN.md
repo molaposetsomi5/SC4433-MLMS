@@ -56,11 +56,24 @@ Raw 40/50 at 0,1,2,3,4 days -> 40, 35, 30, 25, 0. Penalty larger than the mark f
 | ST-10 | first run | empty database: weak password rejected, admin created, login works | as stated | Pass |
 | ST-11 | NFR-01 | `mlms_perf`: 800 students, login + assignment list | both under 2000 ms (measured 74 ms and 0.3 ms) | Pass |
 
+## 3a. Added in v1.1 (CR1)
+| ID | Use case / flow | Steps (summary) | Expected | Result |
+|---|---|---|---|---|
+| ST-12 | Grant class extension | lecturer option 8 extends an assignment; a student lists assignments | "Deadline extended for the whole class"; student sees "extended for the whole class (was ...)" | Pass |
+| ST-13 | Upgrade | v1.0 database file opened with v1.1 | schema 1 -> 2, all data kept | Pass (manual run, see CR1 analysis section 4; automated as `ClassExtensionTest.VersionOneDatabaseIsUpgraded`) |
+
+Regression rule: on every change the whole automated suite is rerun in CI, not only the new tests.
+
 ## 4. Results summary (v1.0)
 - 116 automated tests, 116 passed (`docs/test_results_v1.0.txt`).
 - Business-logic line coverage (src/domain + src/services): **95.5%** (863/904 lines), function coverage 97.7%.
 - Whole `src/` line coverage: 79.9% (console and demo-data code are covered mainly by system tests).
 - NFR-01: login 74 ms, assignment list 0.3 ms with 800 students (Argon2id interactive settings).
+
+## 4a. Results summary (v1.1)
+- 128 automated tests, 128 passed - the 116 v1.0 tests unchanged plus 12 CR1 tests (`docs/test_results_v1.1.txt`).
+- Business-logic line coverage: **95.9%** (902/941 lines).
+- NFR-01: login 80 ms, assignment list 0.5 ms.
 
 ## 5. Acceptance checklist (run with the demo database: `mlms --seed-demo`)
 The automated equivalent of each item already passes. Fill in the last column when the walkthrough is done

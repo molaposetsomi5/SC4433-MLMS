@@ -46,6 +46,7 @@ private:
     void markSubmission(const User& lecturer);
     void correctMark(const User& lecturer);
     void grantExtension(const User& lecturer);
+    void grantClassExtension(const User& lecturer);
 
     // Head of Department
     void hodMenu(User& hod);

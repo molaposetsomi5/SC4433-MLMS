@@ -138,6 +138,18 @@ CREATE INDEX idx_audit_timestamp ON audit_logs(timestamp);
 CREATE INDEX idx_audit_entity ON audit_logs(entity_type, entity_id);
 )SQL";
 
+// Version 2 (v1.1, change request CR1): class-wide extensions.
+const char* const kSchemaV2 = R"SQL(
+CREATE TABLE class_extensions (
+    class_extension_id INTEGER PRIMARY KEY,
+    assignment_id INTEGER NOT NULL UNIQUE REFERENCES assignments(assignment_id),
+    revised_deadline TEXT NOT NULL,
+    reason TEXT NOT NULL CHECK (length(trim(reason)) > 0),
+    granted_by INTEGER NOT NULL REFERENCES users(user_id),
+    granted_at TEXT NOT NULL
+);
+)SQL";
+
 }  // namespace
 
 int schemaVersion(Database& db) {
@@ -152,6 +164,10 @@ void migrateSchema(Database& db) {
         if (version < 1) {
             db.exec(kSchemaV1);
             db.exec("PRAGMA user_version = 1;");
+        }
+        if (version < 2) {
+            db.exec(kSchemaV2);
+            db.exec("PRAGMA user_version = 2;");
         }
     });
 }

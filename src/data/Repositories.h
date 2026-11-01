@@ -74,6 +74,9 @@ public:
     virtual std::optional<Extension> findById(int extensionId) = 0;
     virtual std::optional<Extension> find(int assignmentId, int studentId) = 0;
     virtual void save(const Extension& extension) = 0;  // insert or replace the single extension
+    // v1.1 (CR1)
+    virtual std::optional<ClassExtension> findClassExtension(int assignmentId) = 0;
+    virtual void saveClassExtension(const ClassExtension& extension) = 0;  // insert or replace
 };
 
 class IMarkRepository {

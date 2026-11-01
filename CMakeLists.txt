@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(MLMS VERSION 1.0.0 LANGUAGES CXX)
+project(MLMS VERSION 1.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -99,6 +99,7 @@ if(MLMS_BUILD_TESTS)
     tests/test_moderation_release.cpp
     tests/test_audit_and_integrity.cpp
     tests/test_system_console.cpp
+    tests/test_class_extension.cpp
   )
   target_include_directories(mlms_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
   target_link_libraries(mlms_tests PRIVATE mlms_core GTest::gtest_main)

@@ -70,6 +70,16 @@ struct Extension {
     std::string grantedAt;
 };
 
+// v1.1 (CR1): one extension for the whole class of an assignment.
+struct ClassExtension {
+    int id = 0;
+    int assignmentId = 0;
+    std::string revisedDeadline;
+    std::string reason;
+    int grantedBy = 0;
+    std::string grantedAt;
+};
+
 struct Mark {
     int id = 0;
     int submissionId = 0;

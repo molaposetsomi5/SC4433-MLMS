@@ -7,11 +7,13 @@ namespace mlms {
 
 AssignmentService::AssignmentService(IAssignmentRepository& assignments, ICourseRepository& courses,
                                      ISubmissionRepository& submissions, IMarkRepository& marks,
-                                     DeadlineResolver& deadlines, PermissionPolicy& permissions, const IClock& clock)
+                                     IExtensionRepository& extensions, DeadlineResolver& deadlines,
+                                     PermissionPolicy& permissions, const IClock& clock)
     : assignments_(assignments),
       courses_(courses),
       submissions_(submissions),
       marks_(marks),
+      extensions_(extensions),
       deadlines_(deadlines),
       permissions_(permissions),
       clock_(clock) {}
@@ -53,8 +55,9 @@ std::vector<CourseAssignment> AssignmentService::listVisibleTo(const User& staff
     }
     std::vector<CourseAssignment> result;
     for (const Course& c : courses) {
-        // cppcheck-suppress useStlAlgorithm ; a plain loop is clearer here
-        for (const Assignment& a : assignments_.listForCourse(c.id)) result.push_back({c, a});
+        for (const Assignment& a : assignments_.listForCourse(c.id)) {
+            result.push_back({c, a, extensions_.findClassExtension(a.id)});
+        }
     }
     return result;
 }
