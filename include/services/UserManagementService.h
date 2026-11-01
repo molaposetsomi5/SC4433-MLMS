@@ -1,4 +1,3 @@
-
 #ifndef USER_MANAGEMENT_SERVICE_H
 #define USER_MANAGEMENT_SERVICE_H
 
@@ -17,7 +16,6 @@ private:
     AuthorizationService& authorizationService;
 
 public:
-    // Constructor
     UserManagementService(
         UserManagementRepository& repository,
         AuthorizationService& authorizationService)
@@ -26,7 +24,6 @@ public:
     {
     }
 
-    // Create a new user account
     bool createUser(
         const User& administrator,
         const string& username,
@@ -37,14 +34,26 @@ public:
         int departmentId,
         const string& studentNumber);
 
-    // Retrieve all user accounts
     vector<UserSummary> getAllUsers(
         const User& administrator);
 
-    // Search for user accounts
     vector<UserSummary> searchUsers(
         const User& administrator,
         const string& searchTerm);
+
+    bool updateUser(
+        const User& administrator,
+        int userId,
+        const string& displayName,
+        Role role,
+        bool hasDepartment,
+        int departmentId,
+        const string& studentNumber);
+
+    bool setUserActive(
+        const User& administrator,
+        int userId,
+        bool active);
 };
 
 #endif

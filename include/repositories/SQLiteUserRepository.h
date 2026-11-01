@@ -1,11 +1,9 @@
-
 #ifndef SQLITE_USER_REPOSITORY_H
 #define SQLITE_USER_REPOSITORY_H
 
 #include "repositories/UserRepository.h"
 #include "repositories/UserManagementRepository.h"
 
-// Forward declaration of SQLite database structure
 struct sqlite3;
 
 class SQLiteUserRepository :
@@ -16,16 +14,13 @@ private:
     sqlite3* database;
 
 public:
-    // Constructor
     SQLiteUserRepository(sqlite3* database)
     {
         this->database = database;
     }
 
-    // Destructor
     ~SQLiteUserRepository();
 
-    // Authentication operations
     unique_ptr<User> findByUsername(
         const string& username);
 
@@ -34,7 +29,6 @@ public:
         int failedLoginCount,
         const string& lockedUntil);
 
-    // User management operations
     bool createUser(
         const string& username,
         const string& passwordHash,
@@ -48,6 +42,18 @@ public:
 
     vector<UserSummary> searchUsers(
         const string& searchTerm);
+
+    bool updateUser(
+        int userId,
+        const string& displayName,
+        Role role,
+        bool hasDepartment,
+        int departmentId,
+        const string& studentNumber);
+
+    bool setUserActive(
+        int userId,
+        bool active);
 };
 
 #endif

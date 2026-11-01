@@ -1,4 +1,3 @@
-
 #include "repositories/SQLiteUserRepository.h"
 
 #include "domain/RoleUsers.h"
@@ -70,8 +69,6 @@ SQLiteUserRepository::~SQLiteUserRepository()
 // AUTHENTICATION OPERATIONS
 // ==========================================
 
-
-// Find a user using their username
 unique_ptr<User> SQLiteUserRepository::findByUsername(
     const string& username)
 {
@@ -174,7 +171,6 @@ unique_ptr<User> SQLiteUserRepository::findByUsername(
 }
 
 
-// Update failed login attempts and lockout time
 bool SQLiteUserRepository::updateLoginState(
     int userId,
     int failedLoginCount,
@@ -231,8 +227,6 @@ bool SQLiteUserRepository::updateLoginState(
 // USER MANAGEMENT OPERATIONS
 // ==========================================
 
-
-// Create a new user account
 bool SQLiteUserRepository::createUser(
     const string& username,
     const string& passwordHash,
@@ -315,7 +309,6 @@ bool SQLiteUserRepository::createUser(
 }
 
 
-// Retrieve all user accounts
 vector<UserSummary> SQLiteUserRepository::getAllUsers()
 {
     vector<UserSummary> users;
@@ -374,7 +367,6 @@ vector<UserSummary> SQLiteUserRepository::getAllUsers()
 }
 
 
-// Search users by username or display name
 vector<UserSummary> SQLiteUserRepository::searchUsers(
     const string& searchTerm)
 {
@@ -445,4 +437,122 @@ vector<UserSummary> SQLiteUserRepository::searchUsers(
     sqlite3_finalize(statement);
 
     return users;
+}
+
+
+// ==========================================
+// UPDATE USER DETAILS
+// ==========================================
+
+bool SQLiteUserRepository::updateUser(
+    int userId,
+    const string& displayName,
+    Role role,
+    bool hasDepartment,
+    int departmentId,
+    const string& studentNumber)
+{
+    const char* sql =
+        "UPDATE users "
+        "SET display_name = ?, role = ?, "
+        "department_id = ?, student_number = ? "
+        "WHERE user_id = ?;";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        database,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        return false;
+    }
+
+    sqlite3_bind_text(
+        statement, 1, displayName.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    string roleText = roleToString(role);
+
+    sqlite3_bind_text(
+        statement, 2, roleText.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    if (hasDepartment)
+    {
+        sqlite3_bind_int(statement, 3, departmentId);
+    }
+    else
+    {
+        sqlite3_bind_null(statement, 3);
+    }
+
+    if (role == Role::STUDENT && !studentNumber.empty())
+    {
+        sqlite3_bind_text(
+            statement, 4, studentNumber.c_str(),
+            -1, SQLITE_TRANSIENT
+        );
+    }
+    else
+    {
+        sqlite3_bind_null(statement, 4);
+    }
+
+    sqlite3_bind_int(statement, 5, userId);
+
+    result = sqlite3_step(statement);
+
+    int changedRows = sqlite3_changes(database);
+
+    sqlite3_finalize(statement);
+
+    return result == SQLITE_DONE && changedRows > 0;
+}
+
+
+// ==========================================
+// ACTIVATE OR DEACTIVATE USER
+// ==========================================
+
+bool SQLiteUserRepository::setUserActive(
+    int userId,
+    bool active)
+{
+    const char* sql =
+        "UPDATE users SET is_active = ? "
+        "WHERE user_id = ?;";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        database,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        return false;
+    }
+
+    sqlite3_bind_int(statement, 1, active ? 1 : 0);
+    sqlite3_bind_int(statement, 2, userId);
+
+    result = sqlite3_step(statement);
+
+    int changedRows = sqlite3_changes(database);
+
+    sqlite3_finalize(statement);
+
+    return result == SQLITE_DONE && changedRows > 0;
 }

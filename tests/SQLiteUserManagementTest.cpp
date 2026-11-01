@@ -247,7 +247,101 @@ int main()
         << endl;
 
 
-    cout << "\n========== ALL SQLITE USER MANAGEMENT TESTS PASSED =========="
+    // ==========================================
+    // TEST 10: UPDATE DISPLAY NAME AND ROLE
+    // ==========================================
+
+    bool updated = repository.updateUser(
+        users[0].userId,
+        "Updated Test Lecturer",
+        Role::HOD,
+        true,
+        departmentId,
+        ""
+    );
+
+    assert(updated == true);
+
+    vector<UserSummary> updatedUsers =
+        repository.getAllUsers();
+
+    assert(updatedUsers[0].displayName == "Updated Test Lecturer");
+    assert(updatedUsers[0].role == Role::HOD);
+
+    cout << "User details and role update: PASSED" << endl;
+
+
+    // ==========================================
+    // TEST 11: DEACTIVATE ACCOUNT
+    // ==========================================
+
+    bool deactivated = repository.setUserActive(
+        users[0].userId,
+        false
+    );
+
+    assert(deactivated == true);
+
+    vector<UserSummary> deactivatedUsers =
+        repository.getAllUsers();
+
+    assert(deactivatedUsers[0].active == false);
+
+    cout << "User account deactivation: PASSED" << endl;
+
+
+    // ==========================================
+    // TEST 12: REACTIVATE ACCOUNT
+    // ==========================================
+
+    bool reactivated = repository.setUserActive(
+        users[0].userId,
+        true
+    );
+
+    assert(reactivated == true);
+
+    vector<UserSummary> reactivatedUsers =
+        repository.getAllUsers();
+
+    assert(reactivatedUsers[0].active == true);
+
+    cout << "User account reactivation: PASSED" << endl;
+
+
+    // ==========================================
+    // TEST 13: REJECT INVALID USER UPDATE
+    // ==========================================
+
+    bool invalidUpdate = repository.updateUser(
+        99999,
+        "Unknown User",
+        Role::LECTURER,
+        true,
+        departmentId,
+        ""
+    );
+
+    assert(invalidUpdate == false);
+
+    cout << "Invalid user update rejection: PASSED" << endl;
+
+
+    // ==========================================
+    // TEST 14: REJECT INVALID USER ACTIVATION
+    // ==========================================
+
+    bool invalidActivation = repository.setUserActive(
+        99999,
+        true
+    );
+
+    assert(invalidActivation == false);
+
+    cout << "Invalid user activation rejection: PASSED" << endl;
+
+
+    cout << "\n========== ALL 14 SQLITE USER MANAGEMENT TESTS PASSED =========="
         << endl;
 
     sqlite3_close(database);

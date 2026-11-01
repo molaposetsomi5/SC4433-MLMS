@@ -1,10 +1,8 @@
-
 #include "services/UserManagementService.h"
 
 #include "security/PasswordHasher.h"
 
 
-// Create a new user account
 bool UserManagementService::createUser(
     const User& administrator,
     const string& username,
@@ -15,14 +13,12 @@ bool UserManagementService::createUser(
     int departmentId,
     const string& studentNumber)
 {
-    // Check whether the user can manage accounts
     if (!authorizationService.hasPermission(
         administrator, Permission::MANAGE_USERS))
     {
         return false;
     }
 
-    // Check required account information
     if (username.empty() ||
         password.empty() ||
         displayName.empty())
@@ -30,19 +26,16 @@ bool UserManagementService::createUser(
         return false;
     }
 
-    // A department ID must be valid when supplied
     if (hasDepartment && departmentId <= 0)
     {
         return false;
     }
 
-    // Students must have a student number
     if (role == Role::STUDENT && studentNumber.empty())
     {
         return false;
     }
 
-    // Hash the password before storing it
     string passwordHash =
         PasswordHasher::hashPassword(password);
 
@@ -51,7 +44,6 @@ bool UserManagementService::createUser(
         return false;
     }
 
-    // Save the new account through the repository
     return repository.createUser(
         username,
         passwordHash,
@@ -64,11 +56,9 @@ bool UserManagementService::createUser(
 }
 
 
-// Retrieve all user accounts
 vector<UserSummary> UserManagementService::getAllUsers(
     const User& administrator)
 {
-    // Check permission
     if (!authorizationService.hasPermission(
         administrator, Permission::MANAGE_USERS))
     {
@@ -79,12 +69,10 @@ vector<UserSummary> UserManagementService::getAllUsers(
 }
 
 
-// Search for user accounts
 vector<UserSummary> UserManagementService::searchUsers(
     const User& administrator,
     const string& searchTerm)
 {
-    // Check permission
     if (!authorizationService.hasPermission(
         administrator, Permission::MANAGE_USERS))
     {
@@ -97,4 +85,65 @@ vector<UserSummary> UserManagementService::searchUsers(
     }
 
     return repository.searchUsers(searchTerm);
+}
+
+
+bool UserManagementService::updateUser(
+    const User& administrator,
+    int userId,
+    const string& displayName,
+    Role role,
+    bool hasDepartment,
+    int departmentId,
+    const string& studentNumber)
+{
+    if (!authorizationService.hasPermission(
+        administrator, Permission::MANAGE_USERS))
+    {
+        return false;
+    }
+
+    if (userId <= 0 || displayName.empty())
+    {
+        return false;
+    }
+
+    if (hasDepartment && departmentId <= 0)
+    {
+        return false;
+    }
+
+    if (role == Role::STUDENT && studentNumber.empty())
+    {
+        return false;
+    }
+
+    return repository.updateUser(
+        userId,
+        displayName,
+        role,
+        hasDepartment,
+        departmentId,
+        studentNumber
+    );
+}
+
+
+bool UserManagementService::setUserActive(
+    const User& administrator,
+    int userId,
+    bool active)
+{
+    if (!authorizationService.hasPermission(
+        administrator, Permission::MANAGE_USERS))
+    {
+        return false;
+    }
+
+    if (userId <= 0)
+    {
+        return false;
+    }
+
+    return repository.setUserActive(userId, active);
 }
