@@ -25,6 +25,13 @@ configure_file(
 # Main MLMS application
 add_executable(MLMS
     src/main.cpp
+    src/domain/User.cpp
+    src/domain/RoleUsers.cpp
+)
+
+# Make application header files available
+target_include_directories(MLMS PRIVATE
+    include
 )
 
 # Link SQLite to the application
