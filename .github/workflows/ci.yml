@@ -1,0 +1,62 @@
+# Builds MLMS, runs the GoogleTest suite, static analysis and coverage on every push and pull request.
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ pkg-config libsqlite3-dev libsodium-dev libgtest-dev cppcheck clang-tidy
+          python3 -m pip install --user --break-system-packages gcovr lizard
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build -j 2
+
+      - name: Unit, integration and system tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Performance check (NFR-01, 800 students)
+        run: ./build/mlms_perf --db perf.db
+
+      - name: Static analysis (cppcheck)
+        run: >
+          cppcheck --enable=warning,style,performance,portability --std=c++17 --inline-suppr
+          --suppress=missingIncludeSystem --suppress=unusedFunction --error-exitcode=1 -I src src tools
+
+      - name: Static analysis (clang-tidy)
+        run: |
+          ls src/*/*.cpp src/*.cpp | xargs -n4 clang-tidy -p build --quiet --warnings-as-errors='*'
+
+      - name: Coverage of the business-logic layer
+        run: |
+          cmake -S . -B build-cov -DMLMS_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug
+          cmake --build build-cov -j 2
+          ctest --test-dir build-cov
+          gcovr -r . build-cov --filter 'src/domain/' --filter 'src/services/' --print-summary --fail-under-line 70 \
+            --html-details coverage.html
+
+      - name: Code metrics
+        run: lizard src -l cpp -w -C 15 || true
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            coverage*.html
+            coverage*.css

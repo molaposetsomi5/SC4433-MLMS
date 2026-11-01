@@ -1,0 +1,283 @@
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 116 tests from 15 test suites.
+[----------] Global test environment set-up.
+[----------] 4 tests from DateTime
+[ RUN      ] DateTime.ParsesMinutesAndSecondsFormats
+[       OK ] DateTime.ParsesMinutesAndSecondsFormats (0 ms)
+[ RUN      ] DateTime.RoundTripsThroughFormat
+[       OK ] DateTime.RoundTripsThroughFormat (0 ms)
+[ RUN      ] DateTime.DifferenceAcrossMonthAndYearBoundaries
+[       OK ] DateTime.DifferenceAcrossMonthAndYearBoundaries (0 ms)
+[ RUN      ] DateTime.FixedClockCanBeMoved
+[       OK ] DateTime.FixedClockCanBeMoved (0 ms)
+[----------] 4 tests from DateTime (0 ms total)
+
+[----------] 2 tests from LatePenaltyPolicy
+[ RUN      ] LatePenaltyPolicy.NegativeLateDaysTreatedAsOnTime
+[       OK ] LatePenaltyPolicy.NegativeLateDaysTreatedAsOnTime (0 ms)
+[ RUN      ] LatePenaltyPolicy.UsableThroughInterface
+[       OK ] LatePenaltyPolicy.UsableThroughInterface (0 ms)
+[----------] 2 tests from LatePenaltyPolicy (0 ms total)
+
+[----------] 1 test from UserFactory
+[ RUN      ] UserFactory.CreatesTheRightSubclassForEachRole
+[       OK ] UserFactory.CreatesTheRightSubclassForEachRole (0 ms)
+[----------] 1 test from UserFactory (0 ms total)
+
+[----------] 1 test from UserPermissions
+[ RUN      ] UserPermissions.EachRoleHasOnlyItsOwnPermissions
+[       OK ] UserPermissions.EachRoleHasOnlyItsOwnPermissions (0 ms)
+[----------] 1 test from UserPermissions (0 ms total)
+
+[----------] 8 tests from AuthTest
+[ RUN      ] AuthTest.LoginWithValidCredentialsReturnsRoleUser
+[       OK ] AuthTest.LoginWithValidCredentialsReturnsRoleUser (2 ms)
+[ RUN      ] AuthTest.WrongPasswordAndUnknownUserGiveSameMessage
+[       OK ] AuthTest.WrongPasswordAndUnknownUserGiveSameMessage (1 ms)
+[ RUN      ] AuthTest.PasswordsAreStoredAsSaltedArgon2idHashes
+[       OK ] AuthTest.PasswordsAreStoredAsSaltedArgon2idHashes (1 ms)
+[ RUN      ] AuthTest.AccountLocksAfterFiveFailuresAndUnlocksLater
+[       OK ] AuthTest.AccountLocksAfterFiveFailuresAndUnlocksLater (1 ms)
+[ RUN      ] AuthTest.SuccessfulLoginResetsFailedCount
+[       OK ] AuthTest.SuccessfulLoginResetsFailedCount (1 ms)
+[ RUN      ] AuthTest.DeactivatedAccountCannotLogIn
+[       OK ] AuthTest.DeactivatedAccountCannotLogIn (1 ms)
+[ RUN      ] AuthTest.ChangePasswordNeedsCurrentPassword
+[       OK ] AuthTest.ChangePasswordNeedsCurrentPassword (1 ms)
+[ RUN      ] AuthTest.AdminResetUnlocksAccount
+[       OK ] AuthTest.AdminResetUnlocksAccount (1 ms)
+[----------] 8 tests from AuthTest (13 ms total)
+
+[----------] 10 tests from AdminTest
+[ RUN      ] AdminTest.OnlyAdministratorCanCreateUsers
+[       OK ] AdminTest.OnlyAdministratorCanCreateUsers (1 ms)
+[ RUN      ] AdminTest.RejectsInvalidUserDetails
+[       OK ] AdminTest.RejectsInvalidUserDetails (1 ms)
+[ RUN      ] AdminTest.InitialAdministratorOnlyOnEmptyDatabase
+[       OK ] AdminTest.InitialAdministratorOnlyOnEmptyDatabase (1 ms)
+[ RUN      ] AdminTest.CannotDeactivateOwnAccount
+[       OK ] AdminTest.CannotDeactivateOwnAccount (1 ms)
+[ RUN      ] AdminTest.UpdateDetailsChangesNameAndDepartment
+[       OK ] AdminTest.UpdateDetailsChangesNameAndDepartment (1 ms)
+[ RUN      ] AdminTest.CourseNeedsValidDepartmentAndUniqueCode
+[       OK ] AdminTest.CourseNeedsValidDepartmentAndUniqueCode (1 ms)
+[ RUN      ] AdminTest.DuplicateDepartmentRejected
+[       OK ] AdminTest.DuplicateDepartmentRejected (1 ms)
+[ RUN      ] AdminTest.AssignAndEnrolCheckRoles
+[       OK ] AdminTest.AssignAndEnrolCheckRoles (1 ms)
+[ RUN      ] AdminTest.CoursesForEachRole
+[       OK ] AdminTest.CoursesForEachRole (1 ms)
+[ RUN      ] AdminTest.AssignmentCreationValidatesInput
+[       OK ] AdminTest.AssignmentCreationValidatesInput (1 ms)
+[----------] 10 tests from AdminTest (13 ms total)
+
+[----------] 14 tests from SubmissionTest
+[ RUN      ] SubmissionTest.OnTimeSubmissionIsRecorded
+[       OK ] SubmissionTest.OnTimeSubmissionIsRecorded (1 ms)
+[ RUN      ] SubmissionTest.ExactlyAtDeadlineIsOnTime
+[       OK ] SubmissionTest.ExactlyAtDeadlineIsOnTime (1 ms)
+[ RUN      ] SubmissionTest.OneSecondAfterDeadlineIsLate
+[       OK ] SubmissionTest.OneSecondAfterDeadlineIsLate (1 ms)
+[ RUN      ] SubmissionTest.MoreThanThreeDaysLateIsStillAcceptedButFlagged
+[       OK ] SubmissionTest.MoreThanThreeDaysLateIsStillAcceptedButFlagged (1 ms)
+[ RUN      ] SubmissionTest.ResubmissionBeforeDeadlineKeepsHistory
+[       OK ] SubmissionTest.ResubmissionBeforeDeadlineKeepsHistory (1 ms)
+[ RUN      ] SubmissionTest.ResubmissionAfterDeadlineIsRejected
+[       OK ] SubmissionTest.ResubmissionAfterDeadlineIsRejected (1 ms)
+[ RUN      ] SubmissionTest.NotEnrolledStudentCannotSubmit
+[       OK ] SubmissionTest.NotEnrolledStudentCannotSubmit (1 ms)
+[ RUN      ] SubmissionTest.StaffCannotSubmit
+[       OK ] SubmissionTest.StaffCannotSubmit (1 ms)
+[ RUN      ] SubmissionTest.BlankContentAndUnknownAssignmentRejected
+[       OK ] SubmissionTest.BlankContentAndUnknownAssignmentRejected (1 ms)
+[ RUN      ] SubmissionTest.IndividualExtensionMovesThatStudentsDeadlineOnly
+[       OK ] SubmissionTest.IndividualExtensionMovesThatStudentsDeadlineOnly (1 ms)
+[ RUN      ] SubmissionTest.ExtensionShownInStudentAssignmentList
+[       OK ] SubmissionTest.ExtensionShownInStudentAssignmentList (1 ms)
+[ RUN      ] SubmissionTest.ExtensionRulesAreEnforced
+[       OK ] SubmissionTest.ExtensionRulesAreEnforced (1 ms)
+[ RUN      ] SubmissionTest.ExtensionCanBeChangedAndIsAudited
+[       OK ] SubmissionTest.ExtensionCanBeChangedAndIsAudited (1 ms)
+[ RUN      ] SubmissionTest.SubmissionIsAudited
+[       OK ] SubmissionTest.SubmissionIsAudited (1 ms)
+[----------] 14 tests from SubmissionTest (19 ms total)
+
+[----------] 14 tests from MarkingTest
+[ RUN      ] MarkingTest.CannotMarkBeforeDeadline
+[       OK ] MarkingTest.CannotMarkBeforeDeadline (1 ms)
+[ RUN      ] MarkingTest.MarkMustBeWithinRange
+[       OK ] MarkingTest.MarkMustBeWithinRange (1 ms)
+[ RUN      ] MarkingTest.BoundaryMarksAccepted
+[       OK ] MarkingTest.BoundaryMarksAccepted (1 ms)
+[ RUN      ] MarkingTest.OnlyAssignedLecturerCanMark
+[       OK ] MarkingTest.OnlyAssignedLecturerCanMark (1 ms)
+[ RUN      ] MarkingTest.NewMarkAwaitsModerationAndIsAudited
+[       OK ] MarkingTest.NewMarkAwaitsModerationAndIsAudited (1 ms)
+[ RUN      ] MarkingTest.LatePenaltyWorkedExample
+[       OK ] MarkingTest.LatePenaltyWorkedExample (1 ms)
+[ RUN      ] MarkingTest.MoreThanThreeDaysLateGetsZero
+[       OK ] MarkingTest.MoreThanThreeDaysLateGetsZero (1 ms)
+[ RUN      ] MarkingTest.ExtensionCountsTowardsPenaltyClock
+[       OK ] MarkingTest.ExtensionCountsTowardsPenaltyClock (1 ms)
+[ RUN      ] MarkingTest.SecondMarkMustUseCorrection
+[       OK ] MarkingTest.SecondMarkMustUseCorrection (1 ms)
+[ RUN      ] MarkingTest.CorrectionNeedsReasonAndIsAudited
+[       OK ] MarkingTest.CorrectionNeedsReasonAndIsAudited (1 ms)
+[ RUN      ] MarkingTest.CannotCorrectUnmarkedSubmission
+[       OK ] MarkingTest.CannotCorrectUnmarkedSubmission (1 ms)
+[ RUN      ] MarkingTest.ExtensionNotAllowedAfterMarking
+[       OK ] MarkingTest.ExtensionNotAllowedAfterMarking (1 ms)
+[ RUN      ] MarkingTest.CannotMarkBeforeStudentsExtendedDeadline
+[       OK ] MarkingTest.CannotMarkBeforeStudentsExtendedDeadline (1 ms)
+[ RUN      ] MarkingTest.LecturerSeesSubmissionsWithLatenessAndOwnMarks
+[       OK ] MarkingTest.LecturerSeesSubmissionsWithLatenessAndOwnMarks (1 ms)
+[----------] 14 tests from MarkingTest (22 ms total)
+
+[----------] 14 tests from ModerationTest
+[ RUN      ] ModerationTest.StudentCannotSeeUnreleasedMark
+[       OK ] ModerationTest.StudentCannotSeeUnreleasedMark (1 ms)
+[ RUN      ] ModerationTest.PendingListShowsDepartmentMarksOnly
+[       OK ] ModerationTest.PendingListShowsDepartmentMarksOnly (1 ms)
+[ RUN      ] ModerationTest.ApproveRecordsDecision
+[       OK ] ModerationTest.ApproveRecordsDecision (1 ms)
+[ RUN      ] ModerationTest.AmendNeedsReasonAndRecalculates
+[       OK ] ModerationTest.AmendNeedsReasonAndRecalculates (1 ms)
+[ RUN      ] ModerationTest.AmendKeepsLatePenalty
+[       OK ] ModerationTest.AmendKeepsLatePenalty (2 ms)
+[ RUN      ] ModerationTest.ReturnSendsMarkBackToLecturer
+[       OK ] ModerationTest.ReturnSendsMarkBackToLecturer (2 ms)
+[ RUN      ] ModerationTest.WrongDepartmentIsDeniedAndNothingRecorded
+[       OK ] ModerationTest.WrongDepartmentIsDeniedAndNothingRecorded (1 ms)
+[ RUN      ] ModerationTest.LecturerCannotChangeApprovedMark
+[       OK ] ModerationTest.LecturerCannotChangeApprovedMark (1 ms)
+[ RUN      ] ModerationTest.MixedBatchIsRejectedAsAWhole
+[       OK ] ModerationTest.MixedBatchIsRejectedAsAWhole (1 ms)
+[ RUN      ] ModerationTest.UnmarkedSubmissionBlocksRelease
+[       OK ] ModerationTest.UnmarkedSubmissionBlocksRelease (2 ms)
+[ RUN      ] ModerationTest.ReleaseShowsEachStudentOnlyTheirOwnMark
+[       OK ] ModerationTest.ReleaseShowsEachStudentOnlyTheirOwnMark (1 ms)
+[ RUN      ] ModerationTest.OnlyHodCanRelease
+[       OK ] ModerationTest.OnlyHodCanRelease (1 ms)
+[ RUN      ] ModerationTest.ReleasedMarkIsFinal
+[       OK ] ModerationTest.ReleasedMarkIsFinal (2 ms)
+[ RUN      ] ModerationTest.NoSubmissionsMeansNothingToRelease
+[       OK ] ModerationTest.NoSubmissionsMeansNothingToRelease (1 ms)
+[----------] 14 tests from ModerationTest (26 ms total)
+
+[----------] 9 tests from AuditTest
+[ RUN      ] AuditTest.EveryMarkChangeHasActorTimeOldNewAndReason
+[       OK ] AuditTest.EveryMarkChangeHasActorTimeOldNewAndReason (1 ms)
+[ RUN      ] AuditTest.AuditLogCannotBeUpdatedOrDeleted
+[       OK ] AuditTest.AuditLogCannotBeUpdatedOrDeleted (1 ms)
+[ RUN      ] AuditTest.AdministratorSeesEverythingHodSeesOwnDepartment
+[       OK ] AuditTest.AdministratorSeesEverythingHodSeesOwnDepartment (1 ms)
+[ RUN      ] AuditTest.FiltersByAssignmentAndStudent
+[       OK ] AuditTest.FiltersByAssignmentAndStudent (1 ms)
+[ RUN      ] AuditTest.LecturersAndStudentsCannotReadAudit
+[       OK ] AuditTest.LecturersAndStudentsCannotReadAudit (1 ms)
+[ RUN      ] AuditTest.FailedTransactionRollsBackEverything
+[       OK ] AuditTest.FailedTransactionRollsBackEverything (1 ms)
+[ RUN      ] AuditTest.ForeignKeysAndChecksAreEnforced
+[       OK ] AuditTest.ForeignKeysAndChecksAreEnforced (1 ms)
+[ RUN      ] AuditTest.SchemaIsVersioned
+[       OK ] AuditTest.SchemaIsVersioned (1 ms)
+[ RUN      ] AuditTest.QueriesAreParameterisedAgainstInjection
+[       OK ] AuditTest.QueriesAreParameterisedAgainstInjection (1 ms)
+[----------] 9 tests from AuditTest (15 ms total)
+
+[----------] 9 tests from ConsoleSystemTest
+[ RUN      ] ConsoleSystemTest.StudentSubmitsAndResubmitsBeforeDeadline
+[       OK ] ConsoleSystemTest.StudentSubmitsAndResubmitsBeforeDeadline (1 ms)
+[ RUN      ] ConsoleSystemTest.LateSubmissionsWarnTheStudent
+[       OK ] ConsoleSystemTest.LateSubmissionsWarnTheStudent (1 ms)
+[ RUN      ] ConsoleSystemTest.InvalidInputIsReportedAndMenuContinues
+[       OK ] ConsoleSystemTest.InvalidInputIsReportedAndMenuContinues (1 ms)
+[ RUN      ] ConsoleSystemTest.EndToEndSubmissionToReleasedMark
+[       OK ] ConsoleSystemTest.EndToEndSubmissionToReleasedMark (2 ms)
+[ RUN      ] ConsoleSystemTest.HodReturnsMarkAndLecturerCorrectsIt
+[       OK ] ConsoleSystemTest.HodReturnsMarkAndLecturerCorrectsIt (1 ms)
+[ RUN      ] ConsoleSystemTest.ReleaseRefusedForMixedBatchAndOtherDepartment
+[       OK ] ConsoleSystemTest.ReleaseRefusedForMixedBatchAndOtherDepartment (1 ms)
+[ RUN      ] ConsoleSystemTest.LecturerOfAnotherCourseIsDenied
+[       OK ] ConsoleSystemTest.LecturerOfAnotherCourseIsDenied (1 ms)
+[ RUN      ] ConsoleSystemTest.LoginFailuresAndLockout
+[       OK ] ConsoleSystemTest.LoginFailuresAndLockout (1 ms)
+[ RUN      ] ConsoleSystemTest.AdministratorCreatesStudentAndEnrolsThem
+[       OK ] ConsoleSystemTest.AdministratorCreatesStudentAndEnrolsThem (1 ms)
+[----------] 9 tests from ConsoleSystemTest (15 ms total)
+
+[----------] 1 test from ConsoleFirstRun
+[ RUN      ] ConsoleFirstRun.CreatesAdministratorOnEmptyDatabase
+[       OK ] ConsoleFirstRun.CreatesAdministratorOnEmptyDatabase (0 ms)
+[----------] 1 test from ConsoleFirstRun (0 ms total)
+
+[----------] 10 tests from BadInputs/InvalidDateTime
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input0
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input0 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input1
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input1 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input2
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input2 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input3
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input3 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input4
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input4 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input5
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input5 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input6
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input6 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input7
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input7 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input8
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input8 (0 ms)
+[ RUN      ] BadInputs/InvalidDateTime.IsRejected/input9
+[       OK ] BadInputs/InvalidDateTime.IsRejected/input9 (0 ms)
+[----------] 10 tests from BadInputs/InvalidDateTime (0 ms total)
+
+[----------] 10 tests from BVA/LateDaysBoundaries
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/minus86400s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/minus86400s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/minus1s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/minus1s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/0s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/0s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/1s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/1s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/86400s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/86400s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/86401s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/86401s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/108000s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/108000s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/259200s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/259200s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/259201s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/259201s (0 ms)
+[ RUN      ] BVA/LateDaysBoundaries.CountsStartedDays/864000s
+[       OK ] BVA/LateDaysBoundaries.CountsStartedDays/864000s (0 ms)
+[----------] 10 tests from BVA/LateDaysBoundaries (0 ms total)
+
+[----------] 9 tests from EP_BVA/PenaltyAmounts
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case0_0days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case0_0days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case1_1days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case1_1days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case2_2days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case2_2days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case3_3days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case3_3days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case4_4days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case4_4days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case5_3days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case5_3days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case6_1days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case6_1days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case7_0days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case7_0days (0 ms)
+[ RUN      ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case8_1days
+[       OK ] EP_BVA/PenaltyAmounts.AppliesTenPercentOfMaxPerDay/case8_1days (0 ms)
+[----------] 9 tests from EP_BVA/PenaltyAmounts (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 116 tests from 15 test suites ran. (126 ms total)
+[  PASSED  ] 116 tests.

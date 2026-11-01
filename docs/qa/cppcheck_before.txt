@@ -1,0 +1,69 @@
+src/main.cpp:15:26: style: Parameter 'argv' can be declared as const array [constParameter]
+int main(int argc, char* argv[]) {
+                         ^
+src/services/AssignmentService.cpp:56:77: style: Consider using std::transform algorithm instead of a raw loop. [useStlAlgorithm]
+        for (const Assignment& a : assignments_.listForCourse(c.id)) result.push_back({c, a});
+                                                                            ^
+src/services/SubmissionService.cpp:23:5: style: Consider using std::any_of algorithm instead of a raw loop. [useStlAlgorithm]
+    for (const Mark& m : marks_.listForAssignment(assignmentId)) {
+    ^
+src/ui/ConsoleUI.cpp:121:34: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::createUser(User& admin) {
+                                 ^
+src/ui/ConsoleUI.cpp:144:33: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::listUsers(User& admin) {
+                                ^
+src/ui/ConsoleUI.cpp:155:37: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::setUserActive(User& admin) {
+                                    ^
+src/ui/ConsoleUI.cpp:162:32: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::editUser(User& admin) {
+                               ^
+src/ui/ConsoleUI.cpp:171:41: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::resetUserPassword(User& admin) {
+                                        ^
+src/ui/ConsoleUI.cpp:178:40: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::createDepartment(User& admin) {
+                                       ^
+src/ui/ConsoleUI.cpp:190:36: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::createCourse(User& admin) {
+                                   ^
+src/ui/ConsoleUI.cpp:207:38: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::assignLecturer(User& admin) {
+                                     ^
+src/ui/ConsoleUI.cpp:215:36: style: Parameter 'admin' can be declared as reference to const [constParameterReference]
+void ConsoleUI::enrolStudent(User& admin) {
+                                   ^
+src/ui/ConsoleUI.cpp:223:33: style: Parameter 'actor' can be declared as reference to const [constParameterReference]
+void ConsoleUI::showAudit(User& actor) {
+                                ^
+src/ui/ConsoleUI.cpp:267:37: style: Parameter 'user' can be declared as reference to const [constParameterReference]
+void ConsoleUI::listMyCourses(User& user) {
+                                    ^
+src/ui/ConsoleUI.cpp:284:44: style: Parameter 'staff' can be declared as reference to const [constParameterReference]
+void ConsoleUI::listStaffAssignments(User& staff) {
+                                           ^
+src/ui/ConsoleUI.cpp:323:38: style: Parameter 'lecturer' can be declared as reference to const [constParameterReference]
+void ConsoleUI::markSubmission(User& lecturer) {
+                                     ^
+src/ui/ConsoleUI.cpp:332:35: style: Parameter 'lecturer' can be declared as reference to const [constParameterReference]
+void ConsoleUI::correctMark(User& lecturer) {
+                                  ^
+src/ui/ConsoleUI.cpp:374:35: style: Parameter 'hod' can be declared as reference to const [constParameterReference]
+void ConsoleUI::showPending(User& hod) {
+                                  ^
+src/ui/ConsoleUI.cpp:394:35: style: Parameter 'hod' can be declared as reference to const [constParameterReference]
+void ConsoleUI::approveMark(User& hod) {
+                                  ^
+src/ui/ConsoleUI.cpp:401:33: style: Parameter 'hod' can be declared as reference to const [constParameterReference]
+void ConsoleUI::amendMark(User& hod) {
+                                ^
+src/ui/ConsoleUI.cpp:409:34: style: Parameter 'hod' can be declared as reference to const [constParameterReference]
+void ConsoleUI::returnMark(User& hod) {
+                                 ^
+src/ui/ConsoleUI.cpp:446:46: style: Parameter 'student' can be declared as reference to const [constParameterReference]
+void ConsoleUI::listStudentAssignments(User& student) {
+                                             ^
+src/ui/ConsoleUI.cpp:484:35: style: Parameter 'student' can be declared as reference to const [constParameterReference]
+void ConsoleUI::viewResults(User& student) {
+                                  ^
