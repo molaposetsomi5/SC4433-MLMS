@@ -50,6 +50,8 @@ add_executable(MLMS
     src/repositories/sqlite/SQLiteUserRepository.cpp
 
     src/services/AuthenticationService.cpp
+    src/services/Session.cpp
+    src/services/AuthorizationService.cpp
 )
 
 target_include_directories(MLMS PRIVATE
@@ -83,4 +85,32 @@ target_include_directories(MLMS_Authentication_Tests PRIVATE
 target_link_libraries(MLMS_Authentication_Tests PRIVATE
     argon2
     bcrypt
+)
+
+# Session test application
+add_executable(MLMS_Session_Tests
+    tests/SessionTest.cpp
+
+    src/domain/User.cpp
+    src/domain/RoleUsers.cpp
+
+    src/services/Session.cpp
+)
+
+target_include_directories(MLMS_Session_Tests PRIVATE
+    include
+)
+
+# Authorization test application
+add_executable(MLMS_Authorization_Tests
+    tests/AuthorizationTest.cpp
+
+    src/domain/User.cpp
+    src/domain/RoleUsers.cpp
+
+    src/services/AuthorizationService.cpp
+)
+
+target_include_directories(MLMS_Authorization_Tests PRIVATE
+    include
 )
