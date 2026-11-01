@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.20)
 
 project(CS4433_MLMS)
@@ -10,12 +11,26 @@ add_library(sqlite3 STATIC
     third_party/sqlite/sqlite3.c
 )
 
-# Make SQLite header available to the application
 target_include_directories(sqlite3 PUBLIC
     third_party/sqlite
 )
 
-# Copy the database schema into the build directory
+# Build Argon2 as a static library
+add_library(argon2 STATIC
+    third_party/argon2/src/argon2.c
+    third_party/argon2/src/core.c
+    third_party/argon2/src/blake2/blake2b.c
+    third_party/argon2/src/thread.c
+    third_party/argon2/src/encoding.c
+    third_party/argon2/src/ref.c
+)
+
+target_include_directories(argon2 PUBLIC
+    third_party/argon2/include
+    third_party/argon2/src
+)
+
+# Copy database schema into build directory
 configure_file(
     sql/schema.sql
     schema.sql
@@ -25,14 +40,26 @@ configure_file(
 # Main MLMS application
 add_executable(MLMS
     src/main.cpp
+
+    # Domain classes
     src/domain/User.cpp
     src/domain/RoleUsers.cpp
+
+    # Security classes
+    src/security/PasswordHasher.cpp
+
+    # Repository classes
+    src/repositories/UserRepository.cpp
+    src/repositories/sqlite/SQLiteUserRepository.cpp
 )
 
-# Make application header files available
 target_include_directories(MLMS PRIVATE
     include
 )
 
-# Link SQLite to the application
-target_link_libraries(MLMS PRIVATE sqlite3)
+# Link required libraries
+target_link_libraries(MLMS PRIVATE
+    sqlite3
+    argon2
+    bcrypt
+)
