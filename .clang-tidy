@@ -1,0 +1,13 @@
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  performance-*,
+  -performance-enum-size,
+  modernize-use-override,
+  modernize-use-nullptr,
+  readability-else-after-return,
+  readability-container-size-empty,
+  cppcoreguidelines-virtual-class-destructor
+WarningsAsErrors: ''
+HeaderFilterRegex: 'src/.*'

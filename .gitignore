@@ -1,0 +1,10 @@
+build/
+build-*/
+cmake-build-*/
+*.db
+*.db-journal
+*.gcda
+*.gcno
+*.info
+.vscode/
+.idea/
