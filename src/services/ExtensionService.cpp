@@ -64,4 +64,35 @@ std::string ExtensionService::grantIndividual(const User& lecturer, int assignme
     return ext.revisedDeadline;
 }
 
+std::string ExtensionService::grantClass(const User& lecturer, int assignmentId, const std::string& revisedDeadline,
+                                         const std::string& reason) {
+    const Assignment assignment = loadTaughtAssignment(lecturer, assignmentId);
+
+    ClassExtension ext;
+    ext.assignmentId = assignmentId;
+    ext.revisedDeadline = normaliseDateTime(trim(revisedDeadline));
+    ext.reason = requireText(reason, "Reason for the extension");
+    ext.grantedBy = lecturer.id();
+    ext.grantedAt = clock_.nowText();
+
+    if (toSeconds(ext.revisedDeadline) <= toSeconds(assignment.deadline)) {
+        throw ValidationError("The revised deadline must be after the original deadline (" + assignment.deadline +
+                              ")");
+    }
+    if (!marks_.listForAssignment(assignmentId).empty()) {
+        throw RuleViolation("Marking has started for this assignment, so the class deadline can no longer change");
+    }
+
+    auto previous = extensions_.findClassExtension(assignmentId);
+    tx_.run([&] {
+        extensions_.saveClassExtension(ext);
+        audit_.record(lecturer.id(),
+                      previous ? AuditEvent::kClassExtensionChanged : AuditEvent::kClassExtensionGranted,
+                      AuditEntity::kAssignment, assignmentId,
+                      previous ? std::optional<std::string>(previous->revisedDeadline) : std::nullopt,
+                      ext.revisedDeadline, ext.reason);
+    });
+    return ext.revisedDeadline;
+}
+
 }  // namespace mlms

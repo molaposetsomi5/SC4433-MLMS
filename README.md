@@ -1,4 +1,4 @@
-# Moderated Learning Management System (MLMS)
+# Moderated Learning Management System (MLMS) - v1.1
 
 CS4433 Software Engineering - individual project. Molapo Setsumi, 202322042.
 
@@ -25,7 +25,7 @@ works completely offline.
 sudo apt install build-essential cmake pkg-config libsqlite3-dev libsodium-dev libgtest-dev
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
-ctest --test-dir build          # run all 116 tests
+ctest --test-dir build          # run all 128 tests
 ./build/mlms --seed-demo        # first run with sample data
 ```
 
@@ -95,14 +95,16 @@ docs/          Coding standard, test plan, defect log, traceability, deployment,
 | Dependency Injection | constructors, wired in `AppContext` | swap the clock, hasher or database in tests |
 | Factory | `UserFactory::create` | one place turns a role into the right `User` subclass |
 
-## Policy decisions taken for v1.0 (design review items, section 9)
+## Policy decisions (design review items, section 9)
 - Late day = any started 24-hour period after the effective deadline. 10% of the maximum mark per day
   for days 1-3; more than 3 days late = final mark 0. The work is still accepted and recorded.
 - Resubmission is allowed any number of times before the effective deadline while the work is unmarked.
   All versions are kept; the latest is marked.
 - Marking is only possible after the student's effective deadline has passed.
-- One extension per student per assignment. The lecturer can change it until the work is marked; the
-  change is audited. The revised deadline must be later than the original.
+- One individual extension per student per assignment, plus (v1.1, CR1) one class-wide extension per
+  assignment. The student's effective deadline is the latest of the original, class and individual deadlines.
+- Extensions can be changed until marking starts; every grant or change is audited. A revised
+  deadline must be later than the original.
 - Lockout: 5 failed logins lock the account for 15 minutes. Passwords need at least 8 characters.
   An administrator can reset a password, which also unlocks the account.
 - Release is per assignment. It is refused if any submission is unmarked or any mark is not yet approved

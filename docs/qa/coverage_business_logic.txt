@@ -12,14 +12,14 @@ src/domain/Types.cpp                            43       35    81%   14,28,37,45
 src/domain/User.cpp                             19       18    94%   37
 src/domain/User.h                               15       15   100%
 src/domain/Validation.h                         18       18   100%
-src/services/AssignmentService.cpp              62       55    88%   39-43,52,81
-src/services/AuditService.cpp                   65       63    96%   52-53
+src/services/AssignmentService.cpp              65       58    89%   41-45,54,84
+src/services/AuditService.cpp                   65       65   100%
 src/services/AuthService.cpp                    38       38   100%
 src/services/CourseManagementService.cpp
                                                 51       50    98%   69
-src/services/DeadlineResolver.cpp               17       16    94%   17
-src/services/DeadlineResolver.h                  2        2   100%
-src/services/ExtensionService.cpp               47       47   100%
+src/services/DeadlineResolver.cpp               27       26    96%   29
+src/services/DeadlineResolver.h                  3        3   100%
+src/services/ExtensionService.cpp               70       70   100%
 src/services/MarkingService.cpp                 99       99   100%
 src/services/ModerationService.cpp              93       92    98%   50
 src/services/PermissionPolicy.cpp               23       23   100%
@@ -28,5 +28,5 @@ src/services/ReleaseService.cpp                 66       66   100%
 src/services/SubmissionService.cpp              64       57    89%   53,86-91
 src/services/UserManagementService.cpp          78       75    96%   16,38,74
 ------------------------------------------------------------------------------
-TOTAL                                          904      863    95%
+TOTAL                                          941      902    95%
 ------------------------------------------------------------------------------

@@ -220,6 +220,31 @@ void SqliteExtensionRepository::save(const Extension& e) {
     stmt.run();
 }
 
+std::optional<ClassExtension> SqliteExtensionRepository::findClassExtension(int assignmentId) {
+    Statement stmt = db_.prepare(
+        "SELECT class_extension_id, assignment_id, revised_deadline, reason, granted_by, granted_at "
+        "FROM class_extensions WHERE assignment_id = ?");
+    stmt.bind(1, assignmentId);
+    if (!stmt.step()) return std::nullopt;
+    ClassExtension e;
+    e.id = stmt.getInt(0);
+    e.assignmentId = stmt.getInt(1);
+    e.revisedDeadline = stmt.getText(2);
+    e.reason = stmt.getText(3);
+    e.grantedBy = stmt.getInt(4);
+    e.grantedAt = stmt.getText(5);
+    return e;
+}
+
+void SqliteExtensionRepository::saveClassExtension(const ClassExtension& e) {
+    Statement stmt = db_.prepare(
+        "INSERT INTO class_extensions (assignment_id, revised_deadline, reason, granted_by, granted_at) "
+        "VALUES (?,?,?,?,?) ON CONFLICT(assignment_id) DO UPDATE SET revised_deadline = excluded.revised_deadline, "
+        "reason = excluded.reason, granted_by = excluded.granted_by, granted_at = excluded.granted_at");
+    stmt.bind(1, e.assignmentId).bind(2, e.revisedDeadline).bind(3, e.reason).bind(4, e.grantedBy).bind(5, e.grantedAt);
+    stmt.run();
+}
+
 // ---------------------------------------------------------------- marks
 
 namespace {

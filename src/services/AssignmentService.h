@@ -14,6 +14,7 @@ namespace mlms {
 struct CourseAssignment {
     Course course;
     Assignment assignment;
+    std::optional<ClassExtension> classExtension;  // v1.1 (CR1)
 };
 
 struct StudentAssignmentView {
@@ -28,8 +29,8 @@ struct StudentAssignmentView {
 class AssignmentService {
 public:
     AssignmentService(IAssignmentRepository& assignments, ICourseRepository& courses,
-                      ISubmissionRepository& submissions, IMarkRepository& marks, DeadlineResolver& deadlines,
-                      PermissionPolicy& permissions, const IClock& clock);
+                      ISubmissionRepository& submissions, IMarkRepository& marks, IExtensionRepository& extensions,
+                      DeadlineResolver& deadlines, PermissionPolicy& permissions, const IClock& clock);
 
     int createAssignment(const User& lecturer, int courseId, const std::string& title,
                          const std::string& description, const std::string& deadline, double maxMark);
@@ -47,6 +48,7 @@ private:
     ICourseRepository& courses_;
     ISubmissionRepository& submissions_;
     IMarkRepository& marks_;
+    IExtensionRepository& extensions_;
     DeadlineResolver& deadlines_;
     PermissionPolicy& permissions_;
     const IClock& clock_;

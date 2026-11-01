@@ -8,10 +8,22 @@ DeadlineInfo DeadlineResolver::resolve(const Assignment& assignment, int student
     DeadlineInfo info;
     info.original = assignment.deadline;
     info.effective = assignment.deadline;
+    Seconds effective = toSeconds(assignment.deadline);
+    if (auto cls = extensions_.findClassExtension(assignment.id)) {
+        if (toSeconds(cls->revisedDeadline) > effective) {
+            effective = toSeconds(cls->revisedDeadline);
+            info.effective = cls->revisedDeadline;
+            info.classExtension = true;
+            info.extensionReason = cls->reason;
+        }
+    }
     if (auto ext = extensions_.find(assignment.id, studentId)) {
-        info.effective = ext->revisedDeadline;
-        info.individualExtension = true;
-        info.extensionReason = ext->reason;
+        if (toSeconds(ext->revisedDeadline) > effective) {
+            info.effective = ext->revisedDeadline;
+            info.individualExtension = true;
+            info.classExtension = false;
+            info.extensionReason = ext->reason;
+        }
     }
     return info;
 }

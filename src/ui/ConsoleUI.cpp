@@ -20,7 +20,7 @@ void ConsoleUI::attempt(Action action) {
 }
 
 void ConsoleUI::run() {
-    io_.out() << "Moderated Learning Management System (MLMS) v1.0\n";
+    io_.out() << "Moderated Learning Management System (MLMS) v1.1\n";
     try {
         if (!app_.users.hasAnyUsers()) firstRunSetup();
         while (true) {
@@ -247,7 +247,7 @@ void ConsoleUI::lecturerMenu(User& lecturer) {
         io_.out() << "1. My courses\n2. Create assignment\n3. List my assignments\n"
                      "4. View submissions for an assignment\n5. Mark a submission\n"
                      "6. Correct a mark (pending or returned)\n7. Grant an individual extension\n"
-                     "8. Change my password\n0. Log out\n";
+                     "8. Extend the deadline for the whole class\n9. Change my password\n0. Log out\n";
         const int choice = io_.readInt("Choice: ");
         switch (choice) {
             case 1: attempt([&] { listMyCourses(lecturer); }); break;
@@ -257,7 +257,8 @@ void ConsoleUI::lecturerMenu(User& lecturer) {
             case 5: attempt([&] { markSubmission(lecturer); }); break;
             case 6: attempt([&] { correctMark(lecturer); }); break;
             case 7: attempt([&] { grantExtension(lecturer); }); break;
-            case 8: attempt([&] { changeMyPassword(lecturer); }); break;
+            case 8: attempt([&] { grantClassExtension(lecturer); }); break;
+            case 9: attempt([&] { changeMyPassword(lecturer); }); break;
             case 0: return;
             default: io_.error("Unknown option.");
         }
@@ -289,9 +290,13 @@ void ConsoleUI::listStaffAssignments(const User& staff) {
     }
     io_.out() << pad("ID", 5) << pad("Course", 8) << pad("Title", 32) << pad("Deadline", 21) << "Max\n";
     for (const auto& ca : list) {
+        const std::string deadline = ca.classExtension ? ca.classExtension->revisedDeadline : ca.assignment.deadline;
         io_.out() << pad(std::to_string(ca.assignment.id), 5) << pad(ca.course.code, 8)
-                  << pad(ca.assignment.title, 32) << pad(ca.assignment.deadline, 21)
-                  << formatMark(ca.assignment.maxMark) << "\n";
+                  << pad(ca.assignment.title, 32) << pad(deadline, 21) << formatMark(ca.assignment.maxMark) << "\n";
+        if (ca.classExtension) {
+            io_.out() << "      class extension (was " << ca.assignment.deadline << "): " << ca.classExtension->reason
+                      << "\n";
+        }
     }
 }
 
@@ -348,6 +353,15 @@ void ConsoleUI::grantExtension(const User& lecturer) {
     io_.success("Extension granted until " + saved);
 }
 
+void ConsoleUI::grantClassExtension(const User& lecturer) {
+    listStaffAssignments(lecturer);
+    const int assignmentId = io_.readInt("Assignment ID: ");
+    const std::string deadline = io_.readLine("New deadline for the whole class (YYYY-MM-DD HH:MM): ");
+    const std::string reason = io_.readLine("Reason: ");
+    const std::string saved = app_.extensions.grantClass(lecturer, assignmentId, deadline, reason);
+    io_.success("Deadline extended for the whole class until " + saved);
+}
+
 // =================================================================== Head of Department
 
 void ConsoleUI::hodMenu(User& hod) {
@@ -383,9 +397,9 @@ void ConsoleUI::showPending(const User& hod) {
                   << "   raw " << formatMark(item.mark.rawMark) << " - penalty " << formatMark(item.mark.penalty)
                   << " = final " << formatMark(item.mark.finalMark) << " out of "
                   << formatMark(item.assignment.maxMark) << "  (late days: " << item.lateDays << ")\n";
-        if (item.deadline.individualExtension) {
-            io_.out() << "   extension to " << item.deadline.effective << " - " << item.deadline.extensionReason
-                      << "\n";
+        if (item.deadline.isExtended()) {
+            io_.out() << "   " << (item.deadline.classExtension ? "class" : "individual") << " extension to "
+                      << item.deadline.effective << " - " << item.deadline.extensionReason << "\n";
         }
         io_.out() << "   feedback: " << item.mark.feedback << "\n";
     }
@@ -461,6 +475,8 @@ void ConsoleUI::listStudentAssignments(const User& student) {
                   << pad(v.deadline.effective, 21) << pad(formatMark(v.assignment.maxMark), 8) << status << "\n";
         if (v.deadline.individualExtension) {
             io_.out() << "      extended for you (was " << v.deadline.original << ")\n";
+        } else if (v.deadline.classExtension) {
+            io_.out() << "      extended for the whole class (was " << v.deadline.original << ")\n";
         }
     }
 }

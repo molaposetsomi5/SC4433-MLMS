@@ -12,7 +12,7 @@ Five wrong passwords in a row lock your account for 15 minutes.
 ## Student
 | Option | What it does |
 |---|---|
-| 1. My assignments | Lists your assignments, the deadline that applies to **you** (including any extension) and whether you have submitted. |
+| 1. My assignments | Lists your assignments, the deadline that applies to **you** and whether you have submitted. If the deadline was moved you will see "extended for you" or "extended for the whole class" and the original date. |
 | 2. Submit or resubmit work | Choose the assignment ID and type your answer or the path of your file. |
 | 3. My released marks and feedback | Shows marks the HoD has released, any late penalty, and the lecturer's feedback. |
 | 4. Change my password | |
@@ -33,8 +33,10 @@ Good to know:
 | 5. Mark a submission | Only after that student's deadline has passed. Enter the raw mark and written feedback - the late penalty is worked out for you. |
 | 6. Correct a mark | Change a mark that is still waiting for the HoD or was returned by the HoD. A reason is required. |
 | 7. Grant an individual extension | Give one student a later deadline with a reason. Not possible once the work is marked. |
-| 8. Change my password | |
+| 8. Extend the deadline for the whole class | (v1.1) New deadline + reason for every student on the assignment. Not possible once marking has started. |
+| 9. Change my password | |
 
+If a student has an individual extension that is later than the class one, the student keeps the later date.
 Your marks go to the HoD for moderation; students cannot see them until they are released.
 
 ## Head of Department

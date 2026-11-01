@@ -28,7 +28,7 @@ AppContext::AppContext(const std::string& databasePath, std::unique_ptr<IClock> 
       auth(userRepo, hasher, clock),
       users(userRepo, courseRepo, hasher, auth, permissions, clock),
       courses(courseRepo, userRepo, permissions, clock),
-      assignments(assignmentRepo, courseRepo, submissionRepo, markRepo, deadlines, permissions, clock),
+      assignments(assignmentRepo, courseRepo, submissionRepo, markRepo, extensionRepo, deadlines, permissions, clock),
       extensions(assignmentRepo, courseRepo, submissionRepo, extensionRepo, markRepo, permissions, audit, tx,
                  clock),
       submissions(assignmentRepo, submissionRepo, markRepo, deadlines, penaltyPolicy, permissions, audit, tx,

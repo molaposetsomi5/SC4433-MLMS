@@ -20,6 +20,8 @@ constexpr const char* kModerationReturn = "MODERATION_RETURN";
 constexpr const char* kMarkReleased = "MARK_RELEASED";
 constexpr const char* kExtensionGranted = "EXTENSION_GRANTED";
 constexpr const char* kExtensionChanged = "EXTENSION_CHANGED";
+constexpr const char* kClassExtensionGranted = "CLASS_EXTENSION_GRANTED";  // v1.1
+constexpr const char* kClassExtensionChanged = "CLASS_EXTENSION_CHANGED";  // v1.1
 }  // namespace AuditEvent
 
 namespace AuditEntity {
