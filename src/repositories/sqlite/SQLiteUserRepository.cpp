@@ -4,10 +4,71 @@
 #include "domain/RoleUsers.h"
 #include "sqlite3.h"
 
+
+// Convert a role into the text stored in the database
+string roleToString(Role role)
+{
+    if (role == Role::ADMINISTRATOR)
+    {
+        return "ADMINISTRATOR";
+    }
+    else if (role == Role::LECTURER)
+    {
+        return "LECTURER";
+    }
+    else if (role == Role::HOD)
+    {
+        return "HOD";
+    }
+
+    return "STUDENT";
+}
+
+
+// Read a role from the database
+Role stringToRole(const string& role)
+{
+    if (role == "ADMINISTRATOR")
+    {
+        return Role::ADMINISTRATOR;
+    }
+    else if (role == "LECTURER")
+    {
+        return Role::LECTURER;
+    }
+    else if (role == "HOD")
+    {
+        return Role::HOD;
+    }
+
+    return Role::STUDENT;
+}
+
+
+// Safely read text from a database column
+string getColumnText(sqlite3_stmt* statement, int column)
+{
+    const unsigned char* value =
+        sqlite3_column_text(statement, column);
+
+    if (value == nullptr)
+    {
+        return "";
+    }
+
+    return reinterpret_cast<const char*>(value);
+}
+
+
 // Destructor
 SQLiteUserRepository::~SQLiteUserRepository()
 {
 }
+
+
+// ==========================================
+// AUTHENTICATION OPERATIONS
+// ==========================================
 
 
 // Find a user using their username
@@ -35,7 +96,6 @@ unique_ptr<User> SQLiteUserRepository::findByUsername(
         return nullptr;
     }
 
-    // Safely insert the username into the query
     sqlite3_bind_text(
         statement,
         1,
@@ -52,54 +112,27 @@ unique_ptr<User> SQLiteUserRepository::findByUsername(
         return nullptr;
     }
 
-    // Read user information from the database
     int userId = sqlite3_column_int(statement, 0);
 
-    string storedUsername =
-        reinterpret_cast<const char*>(
-            sqlite3_column_text(statement, 1)
-            );
-
-    string passwordHash =
-        reinterpret_cast<const char*>(
-            sqlite3_column_text(statement, 2)
-            );
-
-    string role =
-        reinterpret_cast<const char*>(
-            sqlite3_column_text(statement, 3)
-            );
+    string storedUsername = getColumnText(statement, 1);
+    string passwordHash = getColumnText(statement, 2);
+    string role = getColumnText(statement, 3);
 
     bool active = sqlite3_column_int(statement, 4);
 
-    int departmentId = sqlite3_column_int(statement, 5);
+    int departmentId = 0;
+
+    if (sqlite3_column_type(statement, 5) != SQLITE_NULL)
+    {
+        departmentId = sqlite3_column_int(statement, 5);
+    }
 
     int failedLoginCount =
         sqlite3_column_int(statement, 6);
 
-    const unsigned char* lockedUntilText =
-        sqlite3_column_text(statement, 7);
+    string lockedUntil = getColumnText(statement, 7);
+    string studentNumber = getColumnText(statement, 8);
 
-    string lockedUntil = "";
-
-    if (lockedUntilText != nullptr)
-    {
-        lockedUntil =
-            reinterpret_cast<const char*>(lockedUntilText);
-    }
-
-    const unsigned char* studentNumberText =
-        sqlite3_column_text(statement, 8);
-
-    string studentNumber = "";
-
-    if (studentNumberText != nullptr)
-    {
-        studentNumber =
-            reinterpret_cast<const char*>(studentNumberText);
-    }
-
-    // Create the correct user object
     unique_ptr<User> user = nullptr;
 
     if (role == "ADMINISTRATOR")
@@ -191,4 +224,225 @@ bool SQLiteUserRepository::updateLoginState(
     sqlite3_finalize(statement);
 
     return result == SQLITE_DONE;
+}
+
+
+// ==========================================
+// USER MANAGEMENT OPERATIONS
+// ==========================================
+
+
+// Create a new user account
+bool SQLiteUserRepository::createUser(
+    const string& username,
+    const string& passwordHash,
+    const string& displayName,
+    Role role,
+    bool hasDepartment,
+    int departmentId,
+    const string& studentNumber)
+{
+    const char* sql =
+        "INSERT INTO users "
+        "(username, password_hash, role, display_name, "
+        "department_id, student_number, is_active, "
+        "failed_login_count, locked_until, created_at) "
+        "VALUES (?, ?, ?, ?, ?, ?, 1, 0, NULL, datetime('now'));";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        database,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        return false;
+    }
+
+    sqlite3_bind_text(
+        statement, 1, username.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    sqlite3_bind_text(
+        statement, 2, passwordHash.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    string roleText = roleToString(role);
+
+    sqlite3_bind_text(
+        statement, 3, roleText.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    sqlite3_bind_text(
+        statement, 4, displayName.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    if (hasDepartment)
+    {
+        sqlite3_bind_int(statement, 5, departmentId);
+    }
+    else
+    {
+        sqlite3_bind_null(statement, 5);
+    }
+
+    if (role == Role::STUDENT && !studentNumber.empty())
+    {
+        sqlite3_bind_text(
+            statement, 6, studentNumber.c_str(),
+            -1, SQLITE_TRANSIENT
+        );
+    }
+    else
+    {
+        sqlite3_bind_null(statement, 6);
+    }
+
+    result = sqlite3_step(statement);
+
+    sqlite3_finalize(statement);
+
+    return result == SQLITE_DONE;
+}
+
+
+// Retrieve all user accounts
+vector<UserSummary> SQLiteUserRepository::getAllUsers()
+{
+    vector<UserSummary> users;
+
+    const char* sql =
+        "SELECT user_id, username, display_name, role, "
+        "is_active, department_id, student_number "
+        "FROM users ORDER BY user_id;";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        database,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        return users;
+    }
+
+    while (sqlite3_step(statement) == SQLITE_ROW)
+    {
+        UserSummary user;
+
+        user.userId = sqlite3_column_int(statement, 0);
+        user.username = getColumnText(statement, 1);
+        user.displayName = getColumnText(statement, 2);
+
+        string roleText = getColumnText(statement, 3);
+        user.role = stringToRole(roleText);
+
+        user.active = sqlite3_column_int(statement, 4);
+
+        if (sqlite3_column_type(statement, 5) != SQLITE_NULL)
+        {
+            user.hasDepartment = true;
+            user.departmentId = sqlite3_column_int(statement, 5);
+        }
+        else
+        {
+            user.hasDepartment = false;
+        }
+
+        user.studentNumber = getColumnText(statement, 6);
+
+        users.push_back(user);
+    }
+
+    sqlite3_finalize(statement);
+
+    return users;
+}
+
+
+// Search users by username or display name
+vector<UserSummary> SQLiteUserRepository::searchUsers(
+    const string& searchTerm)
+{
+    vector<UserSummary> users;
+
+    const char* sql =
+        "SELECT user_id, username, display_name, role, "
+        "is_active, department_id, student_number "
+        "FROM users "
+        "WHERE username LIKE ? OR display_name LIKE ? "
+        "ORDER BY user_id;";
+
+    sqlite3_stmt* statement = nullptr;
+
+    int result = sqlite3_prepare_v2(
+        database,
+        sql,
+        -1,
+        &statement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        return users;
+    }
+
+    string searchPattern = "%" + searchTerm + "%";
+
+    sqlite3_bind_text(
+        statement, 1, searchPattern.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    sqlite3_bind_text(
+        statement, 2, searchPattern.c_str(),
+        -1, SQLITE_TRANSIENT
+    );
+
+    while (sqlite3_step(statement) == SQLITE_ROW)
+    {
+        UserSummary user;
+
+        user.userId = sqlite3_column_int(statement, 0);
+        user.username = getColumnText(statement, 1);
+        user.displayName = getColumnText(statement, 2);
+
+        string roleText = getColumnText(statement, 3);
+        user.role = stringToRole(roleText);
+
+        user.active = sqlite3_column_int(statement, 4);
+
+        if (sqlite3_column_type(statement, 5) != SQLITE_NULL)
+        {
+            user.hasDepartment = true;
+            user.departmentId = sqlite3_column_int(statement, 5);
+        }
+        else
+        {
+            user.hasDepartment = false;
+        }
+
+        user.studentNumber = getColumnText(statement, 6);
+
+        users.push_back(user);
+    }
+
+    sqlite3_finalize(statement);
+
+    return users;
 }
