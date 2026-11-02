@@ -56,6 +56,7 @@ std::vector<CourseAssignment> AssignmentService::listVisibleTo(const User& staff
     std::vector<CourseAssignment> result;
     for (const Course& c : courses) {
         for (const Assignment& a : assignments_.listForCourse(c.id)) {
+                         // cppcheck-suppress useStlAlgorithm ; a plain loop is clearer here
             result.push_back({c, a, extensions_.findClassExtension(a.id)});
         }
     }
