@@ -1,0 +1,277 @@
+Demo data loaded. All demo passwords are: Password123
+Moderated Learning Management System (MLMS) v1.1
+
+=== Login ===
+1. Log in
+0. Exit
+Choice: Username: Password:   [OK] Welcome, Lerato Phiri (Student)
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: ID   Course  Title                         Deadline             Max     My status
+1    CS101   Lab 1 - Variables and Loops   2026-10-31 03:04:02  50.00   not submitted
+2    CS101   Lab 2 - Functions             2026-11-09 03:04:02  50.00   not submitted
+4    EN101   Essay - Poetry Analysis       2026-11-12 03:04:02  100.00  not submitted
+3    MA101   Tutorial 1 - Algebra          2026-11-05 03:04:02  20.00   not submitted
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: ID   Course  Title                         Deadline             Max     My status
+1    CS101   Lab 1 - Variables and Loops   2026-10-31 03:04:02  50.00   not submitted
+2    CS101   Lab 2 - Functions             2026-11-09 03:04:02  50.00   not submitted
+4    EN101   Essay - Poetry Analysis       2026-11-12 03:04:02  100.00  not submitted
+3    MA101   Tutorial 1 - Algebra          2026-11-05 03:04:02  20.00   not submitted
+Assignment ID: Your answer, or the path of your file:   [OK] Submitted at 2026-11-02 03:04:02 (version 1), status LATE
+  This work is 2 day(s) late (deadline 2026-10-31 03:04:02). A late penalty of 10% per day will apply.
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: 
+=== Login ===
+1. Log in
+0. Exit
+Choice: Username: Password:   [OK] Welcome, Mr K. Molefi (Lecturer)
+
+=== Lecturer menu ===
+1. My courses
+2. Create assignment
+3. List my assignments
+4. View submissions for an assignment
+5. Mark a submission
+6. Correct a mark (pending or returned)
+7. Grant an individual extension
+8. Extend the deadline for the whole class
+9. Change my password
+0. Log out
+Choice: ID   Course  Title                           Deadline             Max
+1    CS101   Lab 1 - Variables and Loops     2026-10-31 03:04:02  50.00
+2    CS101   Lab 2 - Functions               2026-11-09 03:04:02  50.00
+3    MA101   Tutorial 1 - Algebra            2026-11-05 03:04:02  20.00
+Assignment ID: Sub  Student               Status    Submitted            Ver Late Mark (raw/final)  Mark status
+1    Lerato Phiri          LATE      2026-11-02 03:04:02  1   2    -                 NOT MARKED
+       content: for(int i=0;i<10;i++) total+=i;
+
+=== Lecturer menu ===
+1. My courses
+2. Create assignment
+3. List my assignments
+4. View submissions for an assignment
+5. Mark a submission
+6. Correct a mark (pending or returned)
+7. Grant an individual extension
+8. Extend the deadline for the whole class
+9. Change my password
+0. Log out
+Choice: Submission ID: Raw mark: Written feedback:   [OK] Saved. Raw 40.00, penalty 10.00, final 30.00. Awaiting HoD moderation - not visible to the student yet.
+
+=== Lecturer menu ===
+1. My courses
+2. Create assignment
+3. List my assignments
+4. View submissions for an assignment
+5. Mark a submission
+6. Correct a mark (pending or returned)
+7. Grant an individual extension
+8. Extend the deadline for the whole class
+9. Change my password
+0. Log out
+Choice: 
+=== Login ===
+1. Log in
+0. Exit
+Choice: Username: Password:   [OK] Welcome, Lerato Phiri (Student)
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: No marks have been released to you yet.
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: 
+=== Login ===
+1. Log in
+0. Exit
+Choice: Username: Password:   [OK] Welcome, Dr T. Mokoena (HoD CS) (Head of Department)
+
+=== Head of Department menu ===
+1. Marks awaiting moderation
+2. Approve a mark
+3. Amend a mark
+4. Return a mark to the lecturer
+5. Release marks for an assignment
+6. Department audit log
+7. Change my password
+0. Log out
+Choice: Mark #1  CS101 / Lab 1 - Variables and Loops
+   student: Lerato Phiri
+   raw 40.00 - penalty 10.00 = final 30.00 out of 50.00  (late days: 2)
+   feedback: Correct loop logic; indent consistently.
+
+=== Head of Department menu ===
+1. Marks awaiting moderation
+2. Approve a mark
+3. Amend a mark
+4. Return a mark to the lecturer
+5. Release marks for an assignment
+6. Department audit log
+7. Change my password
+0. Log out
+Choice: Mark ID: Comment (optional):   [OK] Mark approved.
+
+=== Head of Department menu ===
+1. Marks awaiting moderation
+2. Approve a mark
+3. Amend a mark
+4. Return a mark to the lecturer
+5. Release marks for an assignment
+6. Department audit log
+7. Change my password
+0. Log out
+Choice: ID   Course  Title                           Deadline             Max
+1    CS101   Lab 1 - Variables and Loops     2026-10-31 03:04:02  50.00
+2    CS101   Lab 2 - Functions               2026-11-09 03:04:02  50.00
+3    MA101   Tutorial 1 - Algebra            2026-11-05 03:04:02  20.00
+Assignment ID: Submissions: 1, approved: 1, not marked: 0, not approved: 0, already released: 0
+Release the approved marks to students? (y/n):   [OK] 1 mark(s) released.
+
+=== Head of Department menu ===
+1. Marks awaiting moderation
+2. Approve a mark
+3. Amend a mark
+4. Return a mark to the lecturer
+5. Release marks for an assignment
+6. Department audit log
+7. Change my password
+0. Log out
+Choice: Filter by assignment ID (blank = all): Filter by student user ID (blank = all): #1  2026-11-02 03:04:02  SUBMISSION_RECORDED  by stu1  [SUBMISSION 1]
+      old: -
+      new: version 1; LATE
+      reason: Late submission (2 day(s) late)
+#2  2026-11-02 03:04:02  MARK_ENTERED         by lec.molefi  [MARK 1]
+      old: -
+      new: raw=40.00; penalty=10.00; final=30.00
+      reason: Initial mark entry; late penalty applied for 2 day(s)
+#3  2026-11-02 03:04:03  MODERATION_APPROVE   by hod.cs  [MARK 1]
+      old: raw=40.00; penalty=10.00; final=30.00; status=AWAITING_MODERATION
+      new: raw=40.00; penalty=10.00; final=30.00; status=APPROVED
+      reason: Approved by HoD
+#4  2026-11-02 03:04:03  MARK_RELEASED        by hod.cs  [MARK 1]
+      old: raw=40.00; penalty=10.00; final=30.00; status=APPROVED
+      new: raw=40.00; penalty=10.00; final=30.00; status=RELEASED
+      reason: Released by HoD
+
+=== Head of Department menu ===
+1. Marks awaiting moderation
+2. Approve a mark
+3. Amend a mark
+4. Return a mark to the lecturer
+5. Release marks for an assignment
+6. Department audit log
+7. Change my password
+0. Log out
+Choice: 
+=== Login ===
+1. Log in
+0. Exit
+Choice: Username: Password:   [OK] Welcome, Lerato Phiri (Student)
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: CS101 - Lab 1 - Variables and Loops
+   mark: 30.00 / 50.00  (late penalty 10.00)
+   feedback: Correct loop logic; indent consistently.
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: 
+=== Login ===
+1. Log in
+0. Exit
+Choice: Username: Password:   [OK] Welcome, Mr K. Molefi (Lecturer)
+
+=== Lecturer menu ===
+1. My courses
+2. Create assignment
+3. List my assignments
+4. View submissions for an assignment
+5. Mark a submission
+6. Correct a mark (pending or returned)
+7. Grant an individual extension
+8. Extend the deadline for the whole class
+9. Change my password
+0. Log out
+Choice: ID   Course  Title                           Deadline             Max
+1    CS101   Lab 1 - Variables and Loops     2026-10-31 03:04:02  50.00
+2    CS101   Lab 2 - Functions               2026-11-09 03:04:02  50.00
+3    MA101   Tutorial 1 - Algebra            2026-11-05 03:04:02  20.00
+Assignment ID: New deadline for the whole class (YYYY-MM-DD HH:MM): Reason:   [OK] Deadline extended for the whole class until 2026-11-20 16:00:00
+
+=== Lecturer menu ===
+1. My courses
+2. Create assignment
+3. List my assignments
+4. View submissions for an assignment
+5. Mark a submission
+6. Correct a mark (pending or returned)
+7. Grant an individual extension
+8. Extend the deadline for the whole class
+9. Change my password
+0. Log out
+Choice: 
+=== Login ===
+1. Log in
+0. Exit
+Choice: Username: Password:   [OK] Welcome, Thabo Mohapi (Student)
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: ID   Course  Title                         Deadline             Max     My status
+1    CS101   Lab 1 - Variables and Loops   2026-10-31 03:04:02  50.00   not submitted
+2    CS101   Lab 2 - Functions             2026-11-20 16:00:00  50.00   not submitted
+      extended for the whole class (was 2026-11-09 03:04:02)
+4    EN101   Essay - Poetry Analysis       2026-11-12 03:04:02  100.00  not submitted
+3    MA101   Tutorial 1 - Algebra          2026-11-05 03:04:02  20.00   not submitted
+
+=== Student menu ===
+1. My assignments
+2. Submit or resubmit work
+3. My released marks and feedback
+4. Change my password
+0. Log out
+Choice: 
+=== Login ===
+1. Log in
+0. Exit
+Choice: Goodbye.

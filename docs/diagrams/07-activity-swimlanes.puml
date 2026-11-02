@@ -1,0 +1,58 @@
+@startuml
+!include _style.iuml
+title MLMS - Submission to Released Mark (swimlanes)
+|Student|
+start
+:Log in;
+:Select assignment;
+:Submit or resubmit work;
+|System|
+:Check role, enrolment and closed status;
+:Resolve effective deadline\n(original / class / individual);
+if (Already submitted?) then (yes)
+  if (Before deadline and unmarked?) then (yes)
+    :Add new version, keep old ones;
+  else (no)
+    :Reject resubmission;
+    stop
+  endif
+else (no)
+  :Create submission (SUBMITTED or LATE);
+endif
+:Write audit record (one transaction);
+|Lecturer|
+:Open submissions after the deadline;
+:Enter raw mark and feedback;
+|System|
+:Validate range 0..max;
+:Calculate late days and penalty;
+:Save mark AWAITING_MODERATION + audit;
+|HoD|
+:Review marks for own department;
+if (Decision?) then (return)
+  :Enter reason;
+  |System|
+  :Set RETURNED + decision + audit;
+  |Lecturer|
+  :Correct mark with reason;
+  |System|
+  :Back to AWAITING_MODERATION + audit;
+  |HoD|
+  :Approve;
+else (approve / amend)
+endif
+|System|
+:Set APPROVED + decision + audit;
+|HoD|
+:Release assignment;
+|System|
+if (Every submission approved?) then (yes)
+  :Set RELEASED in one transaction + audit;
+else (no)
+  :Refuse whole batch, nothing released;
+  stop
+endif
+|Student|
+:View mark and feedback;
+stop
+@enduml

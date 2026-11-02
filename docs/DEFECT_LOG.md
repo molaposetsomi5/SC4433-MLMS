@@ -13,5 +13,6 @@ Severity: Critical (data loss / security), Major (wrong result or rule broken), 
 | D-07 | self code review | Major | test `ModerationTest.AmendKeepsLatePenalty` had no assertions, so the "amend recalculates penalty" rule was not really tested | test stub left during writing | rewrote the test: 2-days-late submission, HoD amends 40->45, checks penalty 10 and final 35 | Pass |
 | D-08 | self code review | Trivial | parameterised test names printed as hex bytes, so a failure would be hard to identify | no name generator | added `PrintTo` and name generators (`.../86401s`, `case2_2days`) | Pass |
 | D-09 | coverage tool | Trivial | lcov 2.0 reported impossible values (117%, 0 functions) | lcov/gcov version mismatch on the build machine | switched the coverage report to gcovr (also used in CI) | report 95.5% consistent with gcov |
+| D-10 | CI pipeline (cppcheck step) after pushing v1.1 | Minor | cppcheck `useStlAlgorithm` reported again in `AssignmentService::listVisibleTo`, so the v1.1 CI run failed | the CR1 change rewrote the loop and dropped the inline suppression that v1.0 had | restored the `cppcheck-suppress useStlAlgorithm` comment (with its reason) above the reported line | cppcheck 0 findings, 128/128 tests, CI green |
 
 No Critical defects were found. All defects are closed.

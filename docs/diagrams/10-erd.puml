@@ -1,0 +1,144 @@
+@startuml
+!include _style.iuml
+title MLMS - Entity Relationship Diagram (schema version 2, 3NF)
+hide circle
+skinparam linetype ortho
+entity departments {
+  * department_id : INTEGER <<PK>>
+  --
+  * name : TEXT <<UQ>>
+}
+entity users {
+  * user_id : INTEGER <<PK>>
+  --
+  * username : TEXT <<UQ>>
+  * password_hash : TEXT
+  * role : TEXT <<CHECK>>
+  * display_name : TEXT
+  department_id : INTEGER <<FK>>
+  student_number : TEXT <<UQ>>
+  * is_active : INTEGER
+  * failed_login_count : INTEGER
+  locked_until : TEXT
+  * created_at : TEXT
+}
+entity courses {
+  * course_id : INTEGER <<PK>>
+  --
+  * department_id : INTEGER <<FK>>
+  * code : TEXT <<UQ>>
+  * name : TEXT
+}
+entity lecturer_courses {
+  * lecturer_id : INTEGER <<PK,FK>>
+  * course_id : INTEGER <<PK,FK>>
+}
+entity enrolments {
+  * student_id : INTEGER <<PK,FK>>
+  * course_id : INTEGER <<PK,FK>>
+  --
+  * enrolled_at : TEXT
+}
+entity assignments {
+  * assignment_id : INTEGER <<PK>>
+  --
+  * course_id : INTEGER <<FK>>
+  * title : TEXT
+  * description : TEXT
+  * deadline : TEXT
+  * max_mark : REAL <<CHECK >0>>
+  * created_by : INTEGER <<FK>>
+  * created_at : TEXT
+}
+entity submissions {
+  * submission_id : INTEGER <<PK>>
+  --
+  * assignment_id : INTEGER <<FK>>
+  * student_id : INTEGER <<FK>>
+  * status : TEXT <<CHECK>>
+  * created_at : TEXT
+  UNIQUE(assignment_id, student_id)
+}
+entity submission_versions {
+  * version_id : INTEGER <<PK>>
+  --
+  * submission_id : INTEGER <<FK>>
+  * version_number : INTEGER
+  * submitted_at : TEXT
+  * content_reference : TEXT
+  * is_latest_valid : INTEGER
+}
+entity extensions {
+  * extension_id : INTEGER <<PK>>
+  --
+  * assignment_id : INTEGER <<FK>>
+  * student_id : INTEGER <<FK>>
+  * revised_deadline : TEXT
+  * reason : TEXT
+  * granted_by : INTEGER <<FK>>
+  * granted_at : TEXT
+  UNIQUE(assignment_id, student_id)
+}
+entity class_extensions {
+  * class_extension_id : INTEGER <<PK>>
+  --
+  * assignment_id : INTEGER <<FK,UQ>>
+  * revised_deadline : TEXT
+  * reason : TEXT
+  * granted_by : INTEGER <<FK>>
+  * granted_at : TEXT
+  (v1.1, CR1)
+}
+entity marks {
+  * mark_id : INTEGER <<PK>>
+  --
+  * submission_id : INTEGER <<FK,UQ>>
+  * raw_mark : REAL
+  * penalty : REAL
+  * final_mark : REAL
+  * feedback : TEXT
+  * status : TEXT <<CHECK>>
+  * marked_by : INTEGER <<FK>>
+  * marked_at : TEXT
+}
+entity moderation_decisions {
+  * decision_id : INTEGER <<PK>>
+  --
+  * mark_id : INTEGER <<FK>>
+  * hod_user_id : INTEGER <<FK>>
+  * decision : TEXT <<CHECK>>
+  previous_mark : REAL
+  new_mark : REAL
+  * reason : TEXT
+  * decided_at : TEXT
+}
+entity audit_logs {
+  * audit_id : INTEGER <<PK>>
+  --
+  * actor_user_id : INTEGER <<FK>>
+  * event_type : TEXT
+  * entity_type : TEXT
+  * entity_id : INTEGER
+  * timestamp : TEXT
+  old_value : TEXT
+  new_value : TEXT
+  * reason : TEXT
+  (append-only triggers)
+}
+departments ||--o{ courses
+departments |o--o{ users
+users ||--o{ lecturer_courses
+courses ||--o{ lecturer_courses
+users ||--o{ enrolments
+courses ||--o{ enrolments
+courses ||--o{ assignments
+assignments ||--o{ submissions
+users ||--o{ submissions
+submissions ||--|{ submission_versions
+assignments ||--o{ extensions
+users ||--o{ extensions
+assignments ||--o| class_extensions
+submissions ||--o| marks
+marks ||--o{ moderation_decisions
+users ||--o{ audit_logs
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+!include _style.iuml
+title MLMS - Sequence: Submit assignment (UC-01, incl. late and resubmission paths)
+actor Student
+participant ConsoleUI
+participant SubmissionService as SS
+participant PermissionPolicy as PP
+participant DeadlineResolver as DR
+participant LatePenaltyPolicy as LP
+participant ISubmissionRepository as SR
+participant AuditService as AS
+participant TransactionManager as TX
+Student -> ConsoleUI : 2. Submit (assignmentId, content)
+ConsoleUI -> SS : submit(student, assignmentId, content)
+SS -> PP : require(SubmitWork); requireEnrolled(courseId)
+SS -> DR : resolve(assignment, studentId)
+DR --> SS : DeadlineInfo(effective)
+SS -> LP : lateDays(now, effective)
+LP --> SS : lateDays
+SS -> SR : find(assignmentId, studentId)
+alt first submission
+  SS -> TX : run
+  activate TX
+  SS -> SR : create(status = lateDays > 0 ? LATE : SUBMITTED)
+  SS -> SR : addVersion(submittedAt, content)
+  SS -> AS : record(SUBMISSION_RECORDED)
+  deactivate TX
+else resubmission before deadline and unmarked
+  SS -> TX : run
+  activate TX
+  SS -> SR : addVersion(...) (old versions kept, latest flagged)
+  SS -> AS : record(SUBMISSION_RECORDED, "Resubmission")
+  deactivate TX
+else resubmission after deadline or already marked
+  SS --> ConsoleUI : throw RuleViolation
+  ConsoleUI --> Student : [!] Resubmission is only allowed before the deadline
+end
+SS --> ConsoleUI : SubmitResult(version, status, lateDays)
+ConsoleUI --> Student : [OK] Submitted ... status LATE, 3 day(s) late
+note over SS, TX : If any step throws, the transaction rolls back\nand no success message is shown (E3).
+@enduml

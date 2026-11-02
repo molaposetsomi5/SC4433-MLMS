@@ -1,0 +1,45 @@
+@startuml
+!include _style.iuml
+title MLMS - Sequence: Moderate and release marks (UC-03)
+actor HoD
+participant ConsoleUI
+participant ModerationService as MS
+participant ReleaseService as RS
+participant PermissionPolicy as PP
+participant IMarkRepository as MR
+participant AuditService as AS
+participant TransactionManager as TX
+HoD -> ConsoleUI : 1. Marks awaiting moderation
+ConsoleUI -> MS : pending(hod)
+MS -> MR : listForAssignment(...) [own department]
+MS --> ConsoleUI : items (mark, penalty, extension, feedback)
+HoD -> ConsoleUI : 2/3/4 approve | amend | return (markId, reason)
+ConsoleUI -> MS : approve / amend / returnForCorrection
+MS -> PP : require(ModerateMarks); requireDepartmentScope(courseId)
+alt wrong department
+  PP --> ConsoleUI : PermissionError (nothing recorded)
+else allowed
+  MS -> TX : run
+  activate TX
+  MS -> MR : update(mark.status, finalMark)
+  MS -> MR : addDecision(APPROVE | AMEND | RETURN)
+  MS -> AS : record(MODERATION_*, old, new, reason)
+  deactivate TX
+end
+HoD -> ConsoleUI : 5. Release (assignmentId) + confirm
+ConsoleUI -> RS : releaseAssignment(hod, assignmentId)
+RS -> PP : require(ReleaseMarks); requireDepartmentScope
+RS -> MR : summarise submissions and mark statuses
+alt any unmarked or not approved
+  RS --> ConsoleUI : RuleViolation "Release refused ... No marks were released"
+else all approved
+  RS -> TX : run
+  activate TX
+  loop each APPROVED mark
+    RS -> MR : update(status = RELEASED)
+    RS -> AS : record(MARK_RELEASED)
+  end
+  deactivate TX
+  RS --> ConsoleUI : released count
+end
+@enduml

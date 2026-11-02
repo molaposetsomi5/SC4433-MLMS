@@ -1,0 +1,26 @@
+@startuml
+!include _style.iuml
+title MLMS - Configuration management: branches, CI and releases
+start
+:Create feature/<name> branch from main;
+:Commit small changes\n("area: what changed", FR/CR id);
+:Push branch;
+partition "GitHub Actions CI (every push / PR / tag)" {
+  :Install deps (g++, CMake, SQLite, libsodium, GoogleTest);
+  :Configure + build (CMake);
+  :Run 128 GoogleTest tests;
+  :NFR-01 performance check (800 students);
+  :cppcheck (fail on any finding);
+  :clang-tidy (fail on any finding);
+  :Coverage build, fail if business logic < 70%;
+  :Lizard metrics + upload report;
+}
+if (All green?) then (yes)
+  :Merge to main (--no-ff / pull request);
+  :Tag release (v1.0, v1.1) + GitHub release;
+else (no)
+  :Fix on branch, log defect (e.g. D-10);
+  :Push again;
+endif
+stop
+@enduml

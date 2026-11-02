@@ -1,6 +1,6 @@
 # Quality Assurance Report
 
-v1.1 re-check after CR1: cppcheck 0 findings, clang-tidy 0 findings, 128/128 tests, business-logic line
+v1.1 re-check after CR1: cppcheck 0 findings (after fixing D-10, caught by CI), clang-tidy 0 findings, 128/128 tests, business-logic line
 coverage 95.9% (902/941), 287 functions, average CCN 2.5. `grantClass` CCN 3, `DeadlineResolver::resolve` CCN 5.
 The detailed figures below are from v1.0; `coverage_business_logic.txt`, `lizard_full.txt` and `coverage/`
 have been regenerated for v1.1.

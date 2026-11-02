@@ -1,0 +1,16 @@
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowColor #333333
+skinparam BorderColor #333333
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #333333
+skinparam packageBackgroundColor #FAFAFA
+skinparam componentBackgroundColor #FFFFFF
+skinparam stateBackgroundColor #FFFFFF
+skinparam activityBackgroundColor #FFFFFF
+skinparam sequenceParticipantBackgroundColor #FFFFFF
+skinparam usecaseBackgroundColor #FFFFFF
+skinparam noteBackgroundColor #FFFFF0
+skinparam entityBackgroundColor #FFFFFF

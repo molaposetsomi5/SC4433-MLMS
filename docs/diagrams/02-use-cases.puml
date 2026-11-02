@@ -1,0 +1,59 @@
+@startuml
+!include _style.iuml
+left to right direction
+title MLMS - Use Case Diagram (v1.1)
+actor "User" as U
+actor Administrator as A
+actor Lecturer as L
+actor "Head of Department" as H
+actor Student as S
+A -up-|> U
+L -up-|> U
+H -up-|> U
+S -up-|> U
+rectangle "Moderated Learning Management System" {
+  usecase "Authenticate" as UC_Auth
+  usecase "Change own password" as UC_Pwd
+  usecase "Manage user accounts" as UC_Users
+  usecase "Manage departments\nand courses" as UC_Courses
+  usecase "Assign lecturer /\nenrol student" as UC_Enrol
+  usecase "View audit log" as UC_Audit
+  usecase "Create assignment" as UC_Create
+  usecase "Grant individual\nextension" as UC_Ext
+  usecase "Grant class extension\n(CR1, v1.1)" as UC_ClassExt
+  usecase "UC-02 Mark submission\nand give feedback" as UC_Mark
+  usecase "Correct returned mark" as UC_Correct
+  usecase "UC-03 Moderate marks" as UC_Mod
+  usecase "Release approved marks" as UC_Rel
+  usecase "View assignments\nand deadlines" as UC_View
+  usecase "UC-01 Submit assignment" as UC_Submit
+  usecase "Resubmit before deadline" as UC_Resub
+  usecase "View released marks\nand feedback" as UC_Results
+  usecase "Record mark-change\naudit entry" as UC_Rec
+  usecase "Apply late penalty" as UC_Pen
+}
+U --> UC_Auth
+U --> UC_Pwd
+A --> UC_Users
+A --> UC_Courses
+A --> UC_Enrol
+A --> UC_Audit
+H --> UC_Audit
+L --> UC_Create
+L --> UC_Ext
+L --> UC_ClassExt
+L --> UC_Mark
+L --> UC_Correct
+H --> UC_Mod
+H --> UC_Rel
+S --> UC_View
+S --> UC_Submit
+S --> UC_Results
+UC_Resub .> UC_Submit : <<extend>>
+UC_Mark .> UC_Rec : <<include>>
+UC_Mark .> UC_Pen : <<include>>
+UC_Mod .> UC_Rec : <<include>>
+UC_Rel .> UC_Rec : <<include>>
+UC_Correct .> UC_Rec : <<include>>
+UC_Rel .> UC_Mod : <<include>>
+@enduml

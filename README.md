@@ -1,6 +1,26 @@
 # Moderated Learning Management System (MLMS) - v1.1
 
-CS4433 Software Engineering - individual project. Molapo Setsumi, 202322042.
+CS4433 Software Engineering - individual project. **Molapo Setsumi, 202322042.**
+
+## For the marker - where everything is
+
+| What | Where |
+|---|---|
+| **Final report (PDF)** | [docs/report/MLMS_Final_Report_202322042.pdf](docs/report/MLMS_Final_Report_202322042.pdf) |
+| Phase 1-3 documents (plan, requirements, design) | [docs/phases/](docs/phases/) |
+| All UML diagrams (PNG + PlantUML source) | [docs/diagrams/](docs/diagrams/README.md) |
+| Source code (C++17) and tests (GoogleTest) | [src/](src/), [tests/](tests/), build guide below |
+| Test plan, results, defect log | [TEST_PLAN](docs/TEST_PLAN.md), [results v1.1](docs/test_results_v1.1.txt), [DEFECT_LOG](docs/DEFECT_LOG.md) |
+| CI pipeline and runs | [.github/workflows/ci.yml](.github/workflows/ci.yml), [Actions tab](../../actions) |
+| Static analysis, metrics, code review | [docs/qa/](docs/qa/QA_REPORT.md) |
+| Deployment: install guide, user manual, release notes | [INSTALLATION_GUIDE](docs/INSTALLATION_GUIDE.md), [USER_MANUAL](docs/USER_MANUAL.md), [RELEASE_NOTES](docs/RELEASE_NOTES.md) |
+| Change request CR1 (v1.1) | [CR1_IMPACT_ANALYSIS](docs/CR1_IMPACT_ANALYSIS.md) |
+| Appendices: traceability matrix, risk register | [TRACEABILITY](docs/TRACEABILITY.md), [RISK_REGISTER](docs/RISK_REGISTER.md) |
+| Evidence screenshots and demo transcript | [docs/evidence/](docs/evidence/) |
+| Demonstration video | [docs/video/](docs/video/README.md) |
+| Releases | [v1.0](../../releases/tag/v1.0), [v1.1](../../releases/tag/v1.1) |
+
+
 
 A menu-driven C++17 console application for a secondary school. Administrators, Lecturers, Heads of
 Department and Students each log in and see only the actions their role allows. Students' marks stay

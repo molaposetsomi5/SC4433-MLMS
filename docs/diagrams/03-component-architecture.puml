@@ -1,0 +1,67 @@
+@startuml
+!include _style.iuml
+title MLMS - Layered Architecture and Components (as implemented)
+actor "Administrator | Lecturer\nHoD | Student" as Users
+package "Presentation layer (src/ui)" {
+  component "ConsoleUI\n(role menus)" as UI
+  component "Console\n(input validation)" as Con
+}
+package "Application services (src/services)" {
+  component AuthService
+  component UserManagementService
+  component CourseManagementService
+  component AssignmentService
+  component ExtensionService
+  component SubmissionService
+  component MarkingService
+  component ModerationService
+  component ReleaseService
+  component AuditService
+  component PermissionPolicy
+  component DeadlineResolver
+}
+package "Domain (src/domain)" {
+  component "User hierarchy\n+ UserFactory" as Dom
+  component "LatePenaltyPolicy\n(Strategy)" as Pol
+  component "Entities, DateTime,\nValidation, Errors" as Ent
+}
+package "Data access (src/data)" {
+  interface "I*Repository" as IRepo
+  component "Sqlite*Repository" as Repo
+  component "Database / Statement\n(RAII) + TransactionManager" as DB
+  component "Schema migrations\n(user_version 1 -> 2)" as Sch
+}
+package "Security (src/security)" {
+  component "SodiumPasswordHasher\n(Argon2id)" as Hash
+}
+component "AppContext\n(composition root / DI)" as App
+database "mlms.db\n(local SQLite)" as File
+Users --> UI
+UI --> Con
+UI --> AuthService
+UI --> MarkingService
+UI --> SubmissionService
+UI --> ModerationService
+UI --> ReleaseService
+AuthService --> Hash
+SubmissionService --> DeadlineResolver
+MarkingService --> Pol
+ModerationService --> Pol
+DeadlineResolver --> Pol
+SubmissionService --> PermissionPolicy
+MarkingService --> AuditService
+SubmissionService --> IRepo
+MarkingService --> IRepo
+AuditService --> IRepo
+IRepo <|.. Repo
+Repo --> DB
+Sch --> DB
+DB --> File
+App ..> UI : wires
+App ..> Repo : creates
+note bottom of File
+  Single computer, offline.
+  Foreign keys on, parameterised SQL,
+  audit_logs append-only (triggers).
+end note
+@enduml

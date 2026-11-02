@@ -1,0 +1,38 @@
+@startuml
+!include _style.iuml
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam shadowing false
+title MLMS - Deployment Diagram (v1.x)
+
+node "School computer\n<<device>>\nWindows 10/11 or Ubuntu 24.04" as pc {
+  node "Operating system\n<<execution environment>>" as os {
+    artifact "mlms(.exe)\n<<executable>>\nC++17 console application" as exe
+    artifact "libsodium\n<<library>>\nArgon2id hashing" as sodium
+    artifact "SQLite 3\n<<library>>" as sqlitelib
+    database "mlms.db\n<<file>>\nlocal SQLite database" as db
+  }
+  component "Console / terminal" as term
+  component "System clock" as clockc
+}
+
+node "Backup drive\n<<device>>\nUSB / external disk" as usb {
+  artifact "mlms-YYYY-MM-DD.db\n<<backup copy>>" as bak
+}
+
+actor "Administrator /\nLecturer / HoD /\nStudent" as users
+
+users --> term : keyboard and screen
+term --> exe : stdin / stdout
+exe ..> sodium : <<links>>
+exe ..> sqlitelib : <<links>>
+sqlitelib --> db : file I/O
+exe ..> clockc : deadlines and timestamps
+db ..> bak : weekly manual copy
+
+note bottom of db
+  Single computer only (no network share).
+  Foreign keys on, audit_logs append-only.
+  No internet connection required.
+end note
+@enduml

@@ -1,0 +1,148 @@
+@startuml
+!include _style.iuml
+title MLMS - Class Diagram (1/2): Domain model
+hide empty members
+abstract class User {
+  # record_ : UserRecord
+  + User(record : UserRecord)
+  + {abstract} role() : Role
+  + {abstract} hasPermission(p : Permission) : bool
+  + {abstract} title() : string
+  + id() : int
+  + username() : string
+  + departmentId() : optional<int>
+  + isActive() : bool
+}
+class Administrator
+class Lecturer
+class HeadOfDepartment
+class Student {
+  + studentNumber() : string
+}
+User <|-- Administrator
+User <|-- Lecturer
+User <|-- HeadOfDepartment
+User <|-- Student
+class UserFactory <<Factory>> {
+  + {static} create(r : UserRecord) : shared_ptr<User>
+}
+UserFactory ..> User : creates
+class UserRecord {
+  + id : int
+  + username : string
+  + passwordHash : string
+  + role : Role
+  + displayName : string
+  + departmentId : optional<int>
+  + studentNumber : optional<string>
+  + active : bool
+  + failedLoginCount : int
+  + lockedUntil : optional<string>
+}
+User *-- "1" UserRecord
+enum Role {
+  ADMINISTRATOR
+  LECTURER
+  HOD
+  STUDENT
+}
+enum MarkStatus {
+  AWAITING_MODERATION
+  RETURNED
+  APPROVED
+  RELEASED
+}
+enum SubmissionStatus {
+  SUBMITTED
+  LATE
+}
+class Department {
+  + id : int
+  + name : string
+}
+class Course {
+  + id : int
+  + departmentId : int
+  + code : string
+  + name : string
+}
+class Assignment {
+  + id : int
+  + courseId : int
+  + title : string
+  + deadline : string
+  + maxMark : double
+}
+class Submission {
+  + id : int
+  + assignmentId : int
+  + studentId : int
+  + status : SubmissionStatus
+}
+class SubmissionVersion {
+  + id : int
+  + versionNumber : int
+  + submittedAt : string
+  + contentReference : string
+  + isLatestValid : bool
+}
+class Extension {
+  + assignmentId : int
+  + studentId : int
+  + revisedDeadline : string
+  + reason : string
+}
+class ClassExtension <<v1.1 CR1>> {
+  + assignmentId : int
+  + revisedDeadline : string
+  + reason : string
+}
+class Mark {
+  + id : int
+  + submissionId : int
+  + rawMark : double
+  + penalty : double
+  + finalMark : double
+  + feedback : string
+  + status : MarkStatus
+}
+class ModerationDecision {
+  + markId : int
+  + hodUserId : int
+  + decision : ModerationAction
+  + previousMark : optional<double>
+  + newMark : optional<double>
+  + reason : string
+}
+class AuditRecord {
+  + actorUserId : int
+  + eventType : string
+  + entityType : string
+  + entityId : int
+  + timestamp : string
+  + oldValue : optional<string>
+  + newValue : optional<string>
+  + reason : string
+}
+Department "1" -- "0..*" Course
+Course "1" -- "0..*" Assignment
+Lecturer "0..*" -- "0..*" Course : teaches >
+Student "0..*" -- "0..*" Course : enrolled in >
+HeadOfDepartment "0..*" -- "1" Department : heads >
+Assignment "1" -- "0..*" Submission
+Student "1" -- "0..*" Submission
+Submission "1" *-- "1..*" SubmissionVersion
+Assignment "1" -- "0..*" Extension
+Assignment "1" -- "0..1" ClassExtension
+Submission "1" -- "0..1" Mark
+Mark "1" -- "0..*" ModerationDecision
+interface LatePenaltyPolicy <<Strategy>> {
+  + lateDays(submittedAt, deadline) : int
+  + apply(raw, max, lateDays) : PenaltyResult
+}
+class StandardLatePenaltyPolicy {
+  + kMaxLateDays = 3
+  + kRatePerDay = 0.10
+}
+LatePenaltyPolicy <|.. StandardLatePenaltyPolicy
+@enduml

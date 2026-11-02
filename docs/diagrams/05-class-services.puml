@@ -1,0 +1,92 @@
+@startuml
+!include _style.iuml
+title MLMS - Class Diagram (2/2): Services, repositories and patterns
+hide empty members
+left to right direction
+class SubmissionService {
+  + submit(student : User, assignmentId : int, content : string) : SubmitResult
+  + isClosed(assignmentId : int) : bool
+}
+class MarkingService {
+  + markSubmission(lecturer, submissionId, raw, feedback) : Mark
+  + correctMark(lecturer, submissionId, raw, feedback, reason) : Mark
+}
+class ModerationService {
+  + pending(hod : User) : vector<ModerationItem>
+  + approve(hod, markId, comment)
+  + amend(hod, markId, newRaw, reason)
+  + returnForCorrection(hod, markId, reason)
+}
+class ReleaseService {
+  + releaseAssignment(hod, assignmentId) : int
+  + resultsFor(student) : vector<ResultView>
+}
+class ExtensionService {
+  + grantIndividual(lecturer, assignmentId, studentId, deadline, reason) : string
+  + grantClass(lecturer, assignmentId, deadline, reason) : string
+}
+class AuthService {
+  + login(username, password) : shared_ptr<User>
+  + changePassword(user, current, new)
+}
+class AuditService {
+  + record(actorId, event, entityType, entityId, old, new, reason)
+  + query(actor, filter) : vector<AuditEntryView>
+}
+class PermissionPolicy {
+  + require(user, permission)
+  + requireTeaches(lecturer, courseId)
+  + requireDepartmentScope(hod, courseId)
+  + requireEnrolled(student, courseId)
+}
+class DeadlineResolver {
+  + resolve(assignment, studentId) : DeadlineInfo
+  + lateDays(assignment, submission) : int
+}
+interface LatePenaltyPolicy <<Strategy>>
+interface IPasswordHasher {
+  + hash(password) : string
+  + verify(password, hash) : bool
+}
+class SodiumPasswordHasher
+IPasswordHasher <|.. SodiumPasswordHasher
+interface ISubmissionRepository <<Repository>>
+interface IMarkRepository <<Repository>>
+interface IExtensionRepository <<Repository>>
+interface IAuditRepository <<Repository>>
+interface IUserRepository <<Repository>>
+class SqliteSubmissionRepository
+class SqliteMarkRepository
+class SqliteExtensionRepository
+class SqliteAuditRepository
+class SqliteUserRepository
+ISubmissionRepository <|.. SqliteSubmissionRepository
+IMarkRepository <|.. SqliteMarkRepository
+IExtensionRepository <|.. SqliteExtensionRepository
+IAuditRepository <|.. SqliteAuditRepository
+IUserRepository <|.. SqliteUserRepository
+class TransactionManager {
+  + run(work)
+}
+class AppContext <<composition root>>
+SubmissionService --> ISubmissionRepository
+SubmissionService --> DeadlineResolver
+SubmissionService --> PermissionPolicy
+SubmissionService --> AuditService
+SubmissionService --> TransactionManager
+MarkingService --> IMarkRepository
+MarkingService --> LatePenaltyPolicy
+MarkingService --> AuditService
+ModerationService --> IMarkRepository
+ModerationService --> LatePenaltyPolicy
+ReleaseService --> IMarkRepository
+ExtensionService --> IExtensionRepository
+DeadlineResolver --> IExtensionRepository
+DeadlineResolver --> LatePenaltyPolicy
+AuthService --> IUserRepository
+AuthService --> IPasswordHasher
+AuditService --> IAuditRepository
+AppContext ..> SubmissionService : constructs and injects
+note "Dependency Injection: every service receives\nits repositories, policy, clock and\ntransaction manager through its constructor." as N1
+AppContext .. N1
+@enduml

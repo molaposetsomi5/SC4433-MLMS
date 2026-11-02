@@ -1,0 +1,25 @@
+@startuml
+!include _style.iuml
+title MLMS - Submission and Mark Life Cycle (as implemented)
+state "No submission" as None
+state "SUBMITTED" as Sub
+state "LATE" as Late
+state "AWAITING_MODERATION" as Await
+state "RETURNED" as Ret
+state "APPROVED" as App
+state "RELEASED" as Rel
+[*] --> None
+None --> Sub : submit [now <= effective deadline]
+None --> Late : submit [now > effective deadline]\n/ record late days
+Sub --> Sub : resubmit [before deadline, unmarked]\n/ new version, keep old
+Sub --> Await : lecturer marks [deadline passed]\n/ audit MARK_ENTERED
+Late --> Await : lecturer marks\n/ apply 10% per day, 0 after 3 days
+Await --> Await : lecturer corrects [reason]\n/ audit MARK_CORRECTED
+Await --> App : HoD approves\n/ decision + audit
+Await --> App : HoD amends [reason]\n/ recalc penalty + audit
+Await --> Ret : HoD returns [reason]
+Ret --> Await : lecturer corrects [reason]
+App --> Rel : HoD releases assignment\n[all submissions approved]
+Rel --> [*]
+note right of Rel : Only now can the student\nsee the mark and feedback.\nAssignment is closed.
+@enduml
