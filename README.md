@@ -1,7 +1,6 @@
    # Moderated Learning Management System (MLMS) - v1.1
 
-   **🎥 Demonstration video:** 
-https://drive.google.com/file/d/1smNE99auNlrhhifj0PjQnSaFsBy3g_eu/view?usp=sharing
+ 🎥 **Demonstration video:** [Download Recording.4.mp4](https://github.com/molaposetsomi5/SC4433-MLMS/releases/download/v1.1/Recording.4.mp4) | [View GitHub Release](https://github.com/molaposetsomi5/SC4433-MLMS/releases/tag/v1.1)
 
 
    CS4433 Software Engineering - individual project. **Molapo Setsumi, 202322042.**
